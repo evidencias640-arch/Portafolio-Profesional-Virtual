@@ -1,38 +1,101 @@
 <!DOCTYPE html>
 <html lang="es">
+<html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Joel Steven Pineda Rincón - Ingeniero de Sistemas</title>
+    <title data-i18n="page-title">Joel Steven Pineda Rincón - Ingeniero de Sistemas</title>
     <link
         href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap"
         rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        /* Variables CSS Profesionales */
+        /* =================================================================== */
+        /* 1. VARIABLES CSS (DARK MODE POR DEFECTO) */
+        /* =================================================================== */
         :root {
+            /* Colores Base - Dark Mode */
             --primary-bg: #0f0f0f;
             --secondary-bg: #1a1a1a;
             --card-bg: #242424;
-            --accent-primary: #3b82f6;
-            --accent-secondary: #10b981;
-            --accent-tertiary: #8b5cf6;
             --text-primary: #ffffff;
             --text-secondary: #a1a1aa;
             --text-muted: #71717a;
             --border-color: #374151;
+            --input-bg: #242424;
+
+            /* Colores de Acento (Se mantienen) */
+            --accent-primary: #3b82f6;
+            --accent-secondary: #10b981;
+            --accent-tertiary: #8b5cf6;
+
+            /* Gradientes y Sombras */
             --gradient-primary: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
             --gradient-secondary: linear-gradient(135deg, #10b981 0%, #3b82f6 100%);
             --shadow-lg: 0 10px 25px -3px rgba(0, 0, 0, 0.3);
             --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.4);
+
+            /* Animación de transición suave para todos los elementos */
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        /* Reset y configuración base */
+        /* =================================================================== */
+        /* 2. VARIABLES CSS (LIGHT MODE OVERRIDE) */
+        /* =================================================================== */
+        body.light-mode {
+            /* Colores Base - Light Mode */
+            --primary-bg: #f9fafb;
+            --secondary-bg: #ffffff;
+            --card-bg: #ffffff;
+            --text-primary: #111827;
+            --text-secondary: #4b5563;
+            --text-muted: #6b7280;
+            --border-color: #e5e7eb;
+            --input-bg: #f3f4f6;
+
+            /* Gradientes y Sombras (Más sutiles en Light Mode) */
+            --shadow-lg: 0 10px 25px -3px rgba(0, 0, 0, 0.1);
+            --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.15);
+        }
+
+        /* Ajustes específicos de componentes en Light Mode */
+        body.light-mode nav {
+            background: rgba(255, 255, 255, 0.95);
+            border-bottom: 1px solid #d1d5db;
+        }
+
+        body.light-mode .nav-links a.active {
+            color: var(--accent-primary);
+        }
+
+        body.light-mode .nav-links a:hover {
+            color: var(--text-primary);
+        }
+
+        body.light-mode .skill-card:hover {
+            border-color: var(--accent-primary);
+        }
+
+        body.light-mode .project-card:hover {
+            border-color: var(--accent-secondary);
+        }
+
+        body.light-mode .shape {
+            opacity: 0.1;
+            /* Más sutil en light mode */
+        }
+
+        /* =================================================================== */
+        /* 3. ESTILOS BASE Y COMUNES */
+        /* =================================================================== */
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            /* Aplicar transición CSS a las propiedades clave para cambio de tema suave */
+            transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
         }
 
         body {
@@ -41,20 +104,77 @@
             color: var(--text-primary);
             line-height: 1.6;
             overflow-x: hidden;
+            min-height: 100vh;
+            position: relative;
+            /* Necesario para que el z-index de las formas funcione */
+            z-index: 0;
         }
 
-        /* Fondo sutil y profesional */
-        .bg-pattern {
+        /* =================================================================== */
+        /* NUEVOS ESTILOS PARA FONDO 3D LENTO Y PROFESIONAL */
+        /* =================================================================== */
+        @keyframes moveGradient {
+            0% {
+                transform: translate(0, 0) rotate(0deg);
+            }
+
+            50% {
+                transform: translate(50vw, 50vh) rotate(180deg);
+            }
+
+            100% {
+                transform: translate(0, 0) rotate(360deg);
+            }
+        }
+
+        .animated-bg {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            z-index: -1;
-            opacity: 0.03;
-            background-image:
-                radial-gradient(circle at 25% 25%, #3b82f6 0%, transparent 50%),
-                radial-gradient(circle at 75% 75%, #10b981 0%, transparent 50%);
+            z-index: -2;
+            /* Se asegura de que esté en el fondo */
+            overflow: hidden;
+        }
+
+        .shape {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            /* Suaviza el efecto para un look moderno */
+            opacity: 0.15;
+            animation-iteration-count: infinite;
+            animation-timing-function: linear;
+            will-change: transform;
+            /* Optimización de rendimiento */
+        }
+
+        .shape:nth-child(1) {
+            width: 400px;
+            height: 400px;
+            background: var(--accent-primary);
+            top: -100px;
+            left: -100px;
+            animation: moveGradient 45s infinite alternate;
+        }
+
+        .shape:nth-child(2) {
+            width: 500px;
+            height: 500px;
+            background: var(--accent-secondary);
+            bottom: -200px;
+            right: -200px;
+            animation: moveGradient 55s infinite reverse;
+        }
+
+        .shape:nth-child(3) {
+            width: 300px;
+            height: 300px;
+            background: var(--accent-tertiary);
+            top: 50%;
+            right: -150px;
+            animation: moveGradient 35s infinite alternate-reverse;
         }
 
         /* Navegación profesional */
@@ -108,6 +228,36 @@
 
         .nav-links a.active {
             color: var(--accent-primary);
+        }
+
+        /* Botón de Tema y Controles Extra */
+        .nav-extra-controls {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .theme-toggle-btn {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            color: var(--text-secondary);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            /* Eliminar el borde azul por defecto al hacer focus */
+            outline: none;
+        }
+
+        .theme-toggle-btn:hover {
+            color: var(--text-primary);
+            border-color: var(--accent-primary);
+            box-shadow: 0 0 10px rgba(59, 130, 246, 0.5);
         }
 
         /* Secciones base */
@@ -230,246 +380,266 @@
             background: linear-gradient(45deg, rgba(59, 130, 246, 0.1) 0%, rgba(139, 92, 246, 0.1) 100%);
         }
 
-/* Sección Acerca de Mí */
-.about-content {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 4rem;
-    align-items: start;
-}
+        .profile-img:hover::before {
+            background: linear-gradient(45deg, rgba(59, 130, 246, 0.2) 0%, rgba(139, 92, 246, 0.2) 100%);
+        }
 
-.education-section h3 {
-    font-size: 1.5rem;
-    font-weight: 600;
-    color: var(--accent-primary);
-    margin-bottom: 2rem;
-}
+        /* Sección Acerca de Mí */
+        .about-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: start;
+        }
 
-.education-item {
-    background: var(--card-bg);
-    padding: 1.5rem;
-    border-radius: 12px;
-    margin-bottom: 1rem;
-    border-left: 4px solid var(--accent-primary);
-    transition: all 0.3s ease;
-    /* MODIFICACIÓN: Para alinear título/año y el botón */
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
+        .education-section h3 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--accent-primary);
+            margin-bottom: 2rem;
+        }
 
-.education-item:hover {
-    transform: translateY(-2px);
-    box-shadow: var(--shadow-lg);
-}
+        .education-item {
+            background: var(--card-bg);
+            padding: 1.5rem;
+            border-radius: 12px;
+            margin-bottom: 1rem;
+            border-left: 4px solid var(--accent-primary);
+            transition: all 0.3s ease;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
 
-/* Contenedor auxiliar para el texto de educación, necesario por el flex en .education-item */
-.education-info {
-    flex-grow: 1;
-    margin-right: 1rem;
-}
+        .education-item:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
 
-.education-title {
-    font-size: 1.1rem;
-    font-weight: 600;
-    color: var(--text-primary);
-    margin-bottom: 0.5rem;
-}
+        .education-info {
+            flex-grow: 1;
+            margin-right: 1rem;
+        }
 
-.education-year {
-    color: var(--accent-secondary);
-    font-weight: 500;
-    font-size: 0.95rem;
-}
+        .education-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+        }
 
-.courses-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 1rem;
-    margin-top: 1rem;
-}
+        .education-year {
+            color: var(--accent-secondary);
+            font-weight: 500;
+            font-size: 0.95rem;
+        }
 
-/* OCULTAMOS EL ESTILO VIEJO Y CREAMOS UN CONTENEDOR FLEX PARA EL ÍCONO DE OJO */
-.course-badge {
-    /* Ocultamos esta clase antigua si solo la vamos a usar como texto en el nuevo contenedor */
-    display: none; 
-}
-.course-badge-container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background: var(--secondary-bg);
-    padding: 0.75rem 1rem;
-    border-radius: 8px;
-    border: 1px solid var(--border-color);
-    font-size: 0.9rem;
-    color: var(--text-secondary);
-    text-align: left;
-    transition: all 0.3s ease;
-}
-.course-badge-text {
-    flex-grow: 1;
-    color: var(--text-secondary);
-    margin-right: 0.5rem;
-}
+        .courses-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
 
-/* ---------------------------------------------------- */
-/* ESTILOS DE BOTÓN DE ACCIÓN (Ver Título/Certificado)  */
-/* ---------------------------------------------------- */
-.action-link {
-    background-color: var(--card-bg);
-    color: var(--text-primary);
-    padding: 0.3rem 0.6rem;
-    border-radius: 6px;
-    font-size: 0.85rem;
-    font-weight: 500;
-    transition: background-color 0.2s;
-    display: inline-flex;
-    align-items: center;
-    gap: 0.4rem;
-    cursor: pointer;
-    margin-top: 0;
-    border: none;
-    text-decoration: none;
-}
+        .course-badge-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--secondary-bg);
+            padding: 0.75rem 1rem;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            text-align: left;
+            transition: all 0.3s ease;
+        }
 
-.action-link:hover {
-    background-color: #316dcc;
-}
-/* Ajuste para que el botón de las certificaciones sea solo el ícono de ojo */
-.course-badge-container .action-link {
-    padding: 0.4rem 0.5rem;
-}
+        .course-badge-text {
+            flex-grow: 1;
+            color: var(--text-secondary);
+            margin-right: 0.5rem;
+        }
+
+        /* ESTILOS DE BOTÓN DE ACCIÓN (Ver Título/Certificado) */
+        .action-link {
+            background-color: var(--card-bg);
+            color: var(--text-primary);
+            padding: 0.3rem 0.6rem;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            transition: background-color 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            cursor: pointer;
+            margin-top: 0;
+            border: 1px solid var(--border-color);
+            text-decoration: none;
+        }
+
+        .action-link:hover {
+            background-color: var(--border-color);
+        }
+
+        .course-badge-container .action-link {
+            padding: 0.4rem 0.5rem;
+        }
 
 
-/* ---------------------------------------------------- */
-/* ESTILOS PARA EL MODAL/POPUP (La ventana que se abre) */
-/* ---------------------------------------------------- */
-.modal-overlay {
-    /* Mantenemos position: fixed para que se quede en la ventana */
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.95);
-    display: none; 
-    
-    /* Centrado de la ventana */
-    justify-content: center;
-    align-items: center;
-    
-    z-index: 9999;
-    
-    /* ✅ CLAVE: Permite scroll en el fondo oscuro si el modal excede la altura de la pantalla */
-    overflow-y: auto; 
-    padding: 20px; 
-}
+        /* ESTILOS PARA EL MODAL/POPUP (Responsivo) */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.95);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            overflow-y: auto;
+            padding: 20px;
+        }
 
-.modal-content {
-    background-color: var(--card-bg);
-    padding: 1.5rem;
-    border-radius: 0.75rem;
-    box-shadow: var(--shadow-xl);
-    
-    /* Ajustes de tamaño responsivo */
-    max-width: 95vw;
-    max-height: 95vh;
-    width: 800px; /* Ancho deseado en pantallas grandes */
-    height: 85vh; /* Alto óptimo para pantalla, dando espacio para header/footer */
-    
-    display: flex;
-    flex-direction: column;
-
-    /* 🔑 CLAVE: Truco para centrar verticalmente un bloque */
-    margin: auto; 
-}
+        .modal-content {
+            background-color: var(--card-bg);
+            padding: 1.5rem;
+            border-radius: 0.75rem;
+            box-shadow: var(--shadow-xl);
+            max-width: 95vw;
+            max-height: 95vh;
+            width: 800px;
+            /* Tamaño por defecto para escritorio */
+            height: 85vh;
+            /* Altura por defecto para escritorio */
+            display: flex;
+            flex-direction: column;
+            margin: auto;
+            border: 1px solid var(--border-color);
+        }
 
 
-.modal-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    border-bottom: 1px solid var(--border-color);
-    padding-bottom: 0.75rem;
-    margin-bottom: 0.75rem;
-}
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 0.75rem;
+            margin-bottom: 0.75rem;
+        }
 
-.modal-header h3 {
-    color: var(--text-primary);
-    font-size: 1.25rem;
-    font-weight: 600;
-}
+        .modal-header h3 {
+            color: var(--text-primary);
+            font-size: 1.25rem;
+            font-weight: 600;
+        }
 
-.modal-close-btn {
-    background: none;
-    border: none;
-    color: var(--text-secondary);
-    font-size: 2rem;
-    cursor: pointer;
-    line-height: 1;
-    transition: color 0.2s;
-}
+        .modal-close-btn {
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            font-size: 2rem;
+            cursor: pointer;
+            line-height: 1;
+            transition: color 0.2s;
+        }
 
-.modal-close-btn:hover {
-    color: var(--text-primary);
-}
+        .modal-close-btn:hover {
+            color: var(--text-primary);
+        }
 
-.modal-body {
-    flex-grow: 1;
-    /* ✅ Mantenemos overflow auto para que el visor PDF funcione correctamente */
-    overflow: auto; 
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 0; /* Aseguramos que el PDF tenga todo el espacio */
-}
+        .modal-body {
+            flex-grow: 1;
+            overflow: auto;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 0;
+        }
 
-/* ---------------------------------------------------- */
-/* CONTENIDO DEL MODAL (IFRAME/PDF)                     */
-/* ---------------------------------------------------- */
+        .modal-body iframe,
+        .modal-body object {
+            width: 100%;
+            height: 100%;
+            min-height: 400px;
+            border: none;
+            background: var(--primary-bg);
+        }
 
-/* Estilos para IFRAME/PDF */
-.modal-body iframe, .modal-body object {
-    width: 100%;
-    height: 100%; /* El iframe ocupa el 100% del cuerpo del modal */
-    min-height: 400px; 
-    border: none;
-    background: var(--primary-bg);
-}
+        /* ESTILOS DE INFORMACIÓN PERSONAL (REUTILIZADOS) */
+        .personal-info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            /* Grid completamente responsivo */
+            gap: 1rem;
+            margin-top: 1rem;
+        }
 
-/* Las reglas específicas de .modal-body img han sido eliminadas */
+        .info-card {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1.25rem;
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            transition: all 0.3s ease;
+            position: relative;
+        }
 
-/* ---------------------------------------------------- */
-/* RESPONSIVENESS PARA DISPOSITIVOS MÓVILES             */
-/* ---------------------------------------------------- */
-@media (max-width: 768px) {
-    .education-item {
-        /* Se apila el contenido en móviles */
-        flex-direction: column;
-        align-items: flex-start;
-    }
-    .education-info {
-        margin-bottom: 1rem;
-    }
-    .action-link {
-        /* El botón ocupa todo el ancho */
-        width: 100%;
-        justify-content: center;
-        margin-top: 0;
-    }
-    /* El modal se ajusta mejor a pantallas pequeñas */
-    .modal-content {
-        padding: 1rem;
-        width: 100%;
-    }
-    /* Asegurar que el ícono de ojo de las certificaciones no se apile */
-    .course-badge-container {
-        flex-direction: row; 
-    }
-}
+        .info-card:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+            border-color: var(--accent-tertiary);
+        }
 
-        /* Habilidades Grid Profesional */
+        body.light-mode .info-card:hover {
+            border-color: var(--accent-tertiary);
+        }
+
+        .info-icon {
+            width: 35px;
+            height: 35px;
+            min-width: 35px;
+            min-height: 35px;
+            background: var(--accent-tertiary);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1rem;
+        }
+
+        .info-label {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            font-weight: 500;
+            margin-bottom: 0.2rem;
+        }
+
+        .info-value {
+            font-size: 1.05rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            word-break: break-word;
+            /* Para que textos largos no rompan el layout */
+        }
+
+        .info-value a {
+            color: var(--accent-primary);
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .info-value a:hover {
+            color: var(--accent-secondary);
+        }
+
+        /* Habilidades Grid Profesional (REUTILIZADO PARA VALORES/COMPROMISOS) */
         .skills-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -520,6 +690,11 @@
             justify-content: center;
             color: white;
             font-size: 1.2rem;
+        }
+
+        /* Color específico para la sección Valores/Compromisos */
+        #conoceme .skill-icon {
+            background: var(--accent-tertiary);
         }
 
         .skill-name {
@@ -1067,33 +1242,209 @@
                 transform: scale(0.8);
             }
         }
+
+        /* =================================================================== */
+        /* 4. DISEÑO RESPONSIVO (MEJORADO) */
+        /* =================================================================== */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                width: 100%;
+                flex-direction: column;
+                /* El fondo se adapta al tema actual */
+                background: var(--secondary-bg);
+                backdrop-filter: blur(20px);
+                padding: 2rem;
+                border-top: 1px solid var(--border-color);
+            }
+
+            .nav-links.active {
+                display: flex;
+            }
+
+            .mobile-menu {
+                display: flex;
+            }
+
+            /* FIX: Mover la imagen del Hero hacia abajo y darle más espacio */
+            .hero {
+                /* Ajuste de padding top para dejar espacio a la navegación fija y centrar mejor el contenido */
+                padding-top: 8rem;
+                padding-bottom: 4rem;
+                min-height: auto;
+                /* Permitir que la altura se ajuste al contenido en móvil */
+                align-items: flex-start;
+            }
+
+            .hero-content {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+                text-align: center;
+                /* Reordenar para que la imagen quede arriba */
+                grid-template-areas: "image" "text";
+            }
+
+            .hero-text {
+                grid-area: text;
+            }
+
+            .profile-image {
+                grid-area: image;
+            }
+
+            .hero-text h1 {
+                font-size: 2.5rem;
+            }
+
+            .about-content {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            .profile-container {
+                width: 250px;
+                height: 250px;
+            }
+
+            section {
+                padding: 4rem 1rem;
+            }
+
+            .contact {
+                padding: 2rem 1rem;
+            }
+
+            .education-item {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .education-info {
+                margin-bottom: 1rem;
+            }
+
+            .action-link {
+                width: 100%;
+                justify-content: center;
+                margin-top: 0.5rem;
+            }
+
+            /* FIX: Responsividad de modales */
+            .modal-content {
+                width: 95%;
+                /* Asegurar que ocupe casi todo el ancho */
+                height: 90vh;
+                /* Asegurar que ocupe casi toda la altura visible */
+                margin-top: 5vh;
+                margin-bottom: 5vh;
+            }
+        }
+
+        /* Animaciones suaves */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s ease;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Smooth scroll */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* =================================================================== */
+        /* NUEVOS ESTILOS PARA EL POSICIONAMIENTO DEL IDIOMA Y TEMA */
+        /* =================================================================== */
+
+        /* Contenedor fijo para el idioma y el tema (posición "al lado de la Luna/Sol") */
+        .header-controls {
+            position: fixed;
+            top: 20px;
+            /* Distancia desde la parte superior */
+            right: 20px;
+            /* Distancia desde la derecha */
+            display: flex;
+            /* Alinea los elementos en fila */
+            gap: 10px;
+            /* Espacio entre el botón de idioma y el de tema */
+            z-index: 1000;
+            /* Asegura que esté por encima de otros elementos */
+        }
+
+        /* Reutiliza o define el estilo de tu botón de icono (icon-button) */
+        .icon-button {
+            /* Puedes ajustar estos valores para que coincidan con tu estilo */
+            background: var(--card-bg);
+            color: var(--text-primary);
+            border: 1px solid var(--border-color);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            transition: background 0.3s, border-color 0.3s;
+            font-size: 1rem;
+        }
+
+        .icon-button:hover {
+            background: var(--secondary-bg);
+            border-color: var(--accent-primary);
+        }
+
+        /* Estilo específico para el texto (ES/EN) */
+        #lang-text {
+            font-weight: 600;
+            font-family: 'Inter', sans-serif;
+            /* Usando una fuente de tu configuración */
+        }
     </style>
 </head>
 
 <body>
-    <!-- Fondo profesional -->
-    <div class="bg-pattern"></div>
+    <div class="animated-bg">
+        <div class="shape"></div>
+        <div class="shape"></div>
+        <div class="shape"></div>
+    </div>
 
-    <!-- Navegación -->
     <nav>
         <div class="nav-container">
             <a href="#home" class="logo">Joel Pineda</a>
             <ul class="nav-links">
-                <li><a href="#home" class="active">Inicio</a></li>
-                <li><a href="#about">Acerca de</a></li>
-                <li><a href="#skills">Habilidades</a></li>
-                <li><a href="#projects">Proyectos</a></li>
-                <li><a href="#contact">Contacto</a></li>
+                <li><a href="#home" class="active" data-i18n="nav-home">Inicio</a></li>
+                <li><a href="#about" data-i18n="nav-about">Acerca de</a></li>
+                <li><a href="#skills" data-i18n="nav-skills">Habilidades</a></li>
+                <li><a href="#projects" data-i18n="nav-projects">Proyectos</a></li>
+                <li><a href="#contact" data-i18n="nav-contact">Contacto</a></li>
             </ul>
-            <div class="mobile-menu">
-                <span></span>
-                <span></span>
-                <span></span>
+            <div class="nav-extra-controls">
+                <button id="lang-toggle" class="theme-toggle-btn" aria-label="Cambiar Idioma">
+                    <span id="lang-text">EN</span>
+                </button>
+
+                <button id="theme-toggle-btn" class="theme-toggle-btn" aria-label="Cambiar Tema">
+                    <i class="fas fa-sun"></i>
+                </button>
+
+                <div class="mobile-menu">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
             </div>
         </div>
     </nav>
 
-    <!-- Hero Section -->
     <section id="home" class="hero">
         <div class="hero-content">
             <div class="hero-text">
@@ -1110,10 +1461,7 @@
             <div class="profile-image">
                 <div class="profile-container">
                     <div class="profile-img">
-                        <!-- Aquí puedes agregar tu foto profesional -->
-
-                        <img src="archivos/foto.jpg"
-                            alt="Joel Pineda"
+                        <img src="archivos/foto.jpg" alt="Joel Pineda"
                             style="width: 100%; height: 100%; object-fit: cover; border-radius: 16px;">
                     </div>
                 </div>
@@ -1121,13 +1469,142 @@
         </div>
     </section>
 
+    <section id="conoceme" class="fade-in">
+        <h2 class="section-title">Conóceme Mejor</h2>
+
+        <h3 style="color: var(--accent-primary); margin-bottom: 1.5rem; text-align: center;">Información Personal</h3>
+        <div class="personal-info-grid" style="margin-bottom: 4rem;">
+            <div class="info-card">
+                <div class="info-icon"><i class="fas fa-calendar-alt"></i></div>
+                <div>
+                    <div class="info-label">Nacimiento</div>
+                    <div class="info-value">20 de Julio, 2003</div>
+                </div>
+            </div>
+            <div class="info-card">
+                <div class="info-icon"><i class="fas fa-birthday-cake"></i></div>
+                <div>
+                    <div class="info-label">Edad</div>
+                    <div class="info-value"><span id="edad-actual">22 años</span></div>
+                </div>
+            </div>
+            <div class="info-card">
+                <div class="info-icon"><i class="fas fa-map-marker-alt"></i></div>
+                <div>
+                    <div class="info-label">Ubicación</div>
+                    <div class="info-value">Cúcuta, Norte de Santander</div>
+                </div>
+            </div>
+            <div class="info-card">
+                <div class="info-icon"><i class="fas fa-university"></i></div>
+                <div>
+                    <div class="info-label">Universidad</div>
+                    <div class="info-value">Simón Bolívar</div>
+                </div>
+            </div>
+            <div class="info-card">
+                <div class="info-icon"><i class="fas fa-graduation-cap"></i></div>
+                <div>
+                    <div class="info-label">Semestre</div>
+                    <div class="info-value">8vo - Ing. Sistemas</div>
+                </div>
+            </div>
+            <div class="info-card">
+                <div class="info-icon"><i class="fas fa-ring"></i></div>
+                <div>
+                    <div class="info-label">Estado Civil</div>
+                    <div class="info-value">Soltero</div>
+                </div>
+            </div>
+            <div class="info-card">
+                <div class="info-icon"><i class="fas fa-envelope"></i></div>
+                <div>
+                    <div class="info-label">Correo Electronico</div>
+                    <div class="info-value"><a href="mailto:joelstevenpinedarincon20@gmail.com"
+                            target="_blank">joel@gmail.com</a></div>
+                </div>
+            </div>
+            <div class="info-card" style="grid-column: span 1 / auto;">
+                <div class="info-icon"><i class="fab fa-whatsapp"></i></div>
+                <div>
+                    <div class="info-label">Contacto Directo</div>
+                    <div class="info-value"><a href="https://wa.me/573133118664" target="_blank">3133118664</a></div>
+                </div>
+            </div>
+        </div>
+
+        <h3 style="color: var(--accent-secondary); margin-bottom: 1.5rem; text-align: center;">Intereses y Pasiones</h3>
+        <div class="personal-info-grid" style="margin-bottom: 4rem;">
+            <div class="info-card">
+                <div class="info-icon" style="background: #ef4444;"><i class="fas fa-microchip"></i></div>
+                <div>
+                    <div class="info-label">Tecnología</div>
+                    <div class="info-value">Hardware, AI y Automatización</div>
+                </div>
+            </div>
+            <div class="info-card">
+                <div class="info-icon" style="background: #10b981;"><i class="fas fa-book-open"></i></div>
+                <div>
+                    <div class="info-label">Aprendizaje Continuo</div>
+                    <div class="info-value">Nuevas Metodologías y Frameworks</div>
+                </div>
+            </div>
+            <div class="info-card">
+                <div class="info-icon" style="background: #f59e0b;"><i class="fas fa-gamepad"></i></div>
+                <div>
+                    <div class="info-label">Gaming & Esports</div>
+                    <div class="info-value">Estrategia y Lógica Aplicada</div>
+                </div>
+            </div>
+            <div class="info-card">
+                <div class="info-icon" style="background: #3b82f6;"><i class="fas fa-futbol"></i></div>
+                <div>
+                    <div class="info-label">Deportes</div>
+                    <div class="info-value">Trabajo en equipo y Disciplina</div>
+                </div>
+            </div>
+        </div>
+
+        <h3 style="color: var(--accent-tertiary); margin-bottom: 1.5rem; text-align: center;">Valores y Compromiso
+            Profesional</h3>
+        <div class="skills-grid" style="margin-top: 1rem;">
+            <div class="skill-card section-item-hidden">
+                <div class="skill-header">
+                    <div class="skill-icon" style="background: var(--accent-tertiary);"><i class="fas fa-handshake"></i>
+                    </div>
+                    <div class="skill-name">Integridad</div>
+                </div>
+                <p style="color: var(--text-secondary);">Actuar con honestidad, ética y transparencia en cada proyecto,
+                    asegurando la confianza mutua.</p>
+            </div>
+            <div class="skill-card section-item-hidden">
+                <div class="skill-header">
+                    <div class="skill-icon" style="background: var(--accent-tertiary);"><i class="fas fa-rocket"></i>
+                    </div>
+                    <div class="skill-name">Innovación</div>
+                </div>
+                <p style="color: var(--text-secondary);">Buscar soluciones de vanguardia, aplicar las últimas
+                    tecnologías y optimizar constantemente los procesos.</p>
+            </div>
+            <div class="skill-card section-item-hidden">
+                <div class="skill-header">
+                    <div class="skill-icon" style="background: var(--accent-tertiary);"><i
+                            class="fas fa-clipboard-check"></i></div>
+                    <div class="skill-name">Calidad y Entrega</div>
+                </div>
+                <p style="color: var(--text-secondary);">Compromiso total con la excelencia del código, la estabilidad
+                    del sistema y el cumplimiento riguroso de plazos.</p>
+            </div>
+        </div>
+    </section>
+
     <section id="about" class="fade-in">
-        <h2 class="section-title">Formación Académica y Profesional</h2>
+        <h2 class="section-title">Formación Académica y Certificaciones</h2>
         <div class="about-content">
-            
+
             <div class="education-section">
                 <h3>Educación Formal</h3>
-        
+
                 <div class="education-item">
                     <div class="education-info">
                         <div class="education-title">Ingeniería de Sistemas</div>
@@ -1137,7 +1614,7 @@
                         <i class="fas fa-eye"></i> Ver Título
                     </button>
                 </div>
-        
+
                 <div class="education-item">
                     <div class="education-info">
                         <div class="education-title">Tecnólogo en Gestión de Redes de Datos</div>
@@ -1147,7 +1624,7 @@
                         <i class="fas fa-eye"></i> Ver Título
                     </button>
                 </div>
-        
+
                 <div class="education-item">
                     <div class="education-info">
                         <div class="education-title">Tecnólogo en Análisis y Desarrollo de Sistemas</div>
@@ -1157,7 +1634,7 @@
                         <i class="fas fa-eye"></i> Ver Título
                     </button>
                 </div>
-        
+
                 <div class="education-item">
                     <div class="education-info">
                         <div class="education-title">Técnico en Contabilidad y Finanzas</div>
@@ -1168,7 +1645,7 @@
                     </button>
                 </div>
             </div>
-        
+
             <div class="certifications-section">
                 <h3 style="color: var(--accent-primary); margin-bottom: 1rem;">Certificaciones Profesionales</h3>
                 <div class="courses-grid">
@@ -1197,23 +1674,9 @@
                         </button>
                     </div>
                 </div>
-                
-                <div style="margin-top: 2rem;">
-                    <h3 style="color: var(--accent-primary); margin-bottom: 1rem;">Información Personal</h3>
-                    <p style="color: var(--text-secondary); line-height: 1.7;">
-                        <strong>Nacimiento:</strong> 20 de Julio, 2003<br>
-                        <strong>Edad:</strong> <span id="edad-actual"></span><br>
-                        <strong>Ubicación:</strong> Cúcuta, Norte de Santander<br>
-                        <strong>Universidad:</strong> Universidad Simón Bolívar<br>
-                        <strong>Estudio:</strong> 8vo Semestre - Ingeniería de Sistemas<br>
-                        <strong>Estado Civil:</strong> Soltero<br>
-                        <strong>Contacto Directo:</strong> <a href="https://wa.me/573133118664" target="_blank"
-                            style="color: var(--accent-primary); margin-bottom: 1rem;">3133118664</a>
-                    </p>
-                </div>
             </div>
         </div>
-        
+
         <div id="modal-ing-sistemas" class="modal-overlay">
             <div class="modal-content">
                 <div class="modal-header">
@@ -1221,14 +1684,12 @@
                     <button class="modal-close-btn" onclick="closeModal('modal-ing-sistemas')">&times;</button>
                 </div>
                 <div class="modal-body">
-                    <iframe 
-                        src="archivos/Universidad.pdf#view=fit" 
-                        title="Título Ingeniería de Sistemas">
+                    <iframe src="archivos/Universidad.pdf#view=fit" title="Título Ingeniería de Sistemas">
                     </iframe>
                 </div>
             </div>
         </div>
-        
+
         <div id="modal-tec-redes" class="modal-overlay">
             <div class="modal-content">
                 <div class="modal-header">
@@ -1236,14 +1697,12 @@
                     <button class="modal-close-btn" onclick="closeModal('modal-tec-redes')">&times;</button>
                 </div>
                 <div class="modal-body">
-                    <iframe 
-                        src="archivos/Gestion.pdf#view=fit" 
-                        title="Título Tecnólogo en Gestión de Redes de Datos">
+                    <iframe src="archivos/Gestion.pdf#view=fit" title="Título Tecnólogo en Gestión de Redes de Datos">
                     </iframe>
                 </div>
             </div>
         </div>
-        
+
         <div id="modal-tec-analisis" class="modal-overlay">
             <div class="modal-content">
                 <div class="modal-header">
@@ -1251,14 +1710,13 @@
                     <button class="modal-close-btn" onclick="closeModal('modal-tec-analisis')">&times;</button>
                 </div>
                 <div class="modal-body">
-                    <iframe 
-                        src="archivos/adsi.pdf#view=fit" 
+                    <iframe src="archivos/adsi.pdf#view=fit"
                         title="Título Tecnólogo en Análisis y Desarrollo de Sistemas">
                     </iframe>
                 </div>
             </div>
         </div>
-        
+
         <div id="modal-tec-finanzas" class="modal-overlay">
             <div class="modal-content">
                 <div class="modal-header">
@@ -1266,14 +1724,12 @@
                     <button class="modal-close-btn" onclick="closeModal('modal-tec-finanzas')">&times;</button>
                 </div>
                 <div class="modal-body">
-                    <iframe 
-                        src="archivos/conta.pdf#view=fit" 
-                        title="Título Técnico en Contabilidad y Finanzas">
+                    <iframe src="archivos/Conta.pdf#view=fit" title="Título Técnico en Contabilidad y Finanzas">
                     </iframe>
                 </div>
             </div>
         </div>
-        
+
         <div id="modal-cert-fortinet" class="modal-overlay">
             <div class="modal-content">
                 <div class="modal-header">
@@ -1281,14 +1737,12 @@
                     <button class="modal-close-btn" onclick="closeModal('modal-cert-fortinet')">&times;</button>
                 </div>
                 <div class="modal-body">
-                    <iframe 
-                        src="archivos/fcf.pdf#view=fit" 
-                        title="Certificado Ciberseguridad Fortinet">
+                    <iframe src="archivos/fcf.pdf#view=fit" title="Certificado Ciberseguridad Fortinet">
                     </iframe>
                 </div>
             </div>
         </div>
-        
+
         <div id="modal-cert-coursera" class="modal-overlay">
             <div class="modal-content">
                 <div class="modal-header">
@@ -1296,14 +1750,12 @@
                     <button class="modal-close-btn" onclick="closeModal('modal-cert-coursera')">&times;</button>
                 </div>
                 <div class="modal-body">
-                    <iframe 
-                        src="archivos/coursera.pdf#view=fit" 
-                        title="Certificado Seguridad Informática Coursera">
+                    <iframe src="archivos/coursera.pdf#view=fit" title="Certificado Seguridad Informática Coursera">
                     </iframe>
                 </div>
             </div>
         </div>
-        
+
         <div id="modal-cert-udemy" class="modal-overlay">
             <div class="modal-content">
                 <div class="modal-header">
@@ -1311,35 +1763,33 @@
                     <button class="modal-close-btn" onclick="closeModal('modal-cert-udemy')">&times;</button>
                 </div>
                 <div class="modal-body">
-                    <iframe 
-                        src="./Cert_Udemy.pdf#view=fit" 
-                        title="Certificado Seguridad de la Información Udemy">
+                    <iframe src="./Cert_Udemy.pdf#view=fit" title="Certificado Seguridad de la Información Udemy">
                     </iframe>
                 </div>
             </div>
         </div>
 
-            <div id="modal-cert-fortinet1" class="modal-overlay">
+        <div id="modal-cert-fortinet1" class="modal-overlay">
             <div class="modal-content">
                 <div class="modal-header">
                     <h3>Certificado - Administracion de Seguridad Fortinet</h3>
                     <button class="modal-close-btn" onclick="closeModal('modal-cert-fortinet1')">&times;</button>
                 </div>
                 <div class="modal-body">
-                    <iframe 
-                        src="archivos/fori.pdf#view=fit" 
-                        title="Certificado Admin Segur Fortinet">
+                    <iframe src="archivos/fori.pdf#view=fit" title="Certificado Admin Segur Fortinet">
                     </iframe>
                 </div>
             </div>
         </div>
-        
-        </section>
+    </section>
+
+    <hr>
+
+    <hr>
 
     <section id="soft-skills" class="fade-in">
         <h2 class="section-title">Habilidades Blandas</h2>
         <div class="skills-grid">
-
             <div class="skill-card section-item-hidden">
                 <div class="skill-header">
                     <div class="skill-icon">
@@ -1354,73 +1804,12 @@
                 <p style="color: var(--text-secondary);">Capacidad para guiar, motivar y movilizar equipos hacia
                     objetivos comunes, fomentando la responsabilidad.</p>
             </div>
-
-            <div class="skill-card section-item-hidden">
-                <div class="skill-header">
-                    <div class="skill-icon">
-                        <i class="fas fa-handshake-angle"></i>
-                    </div>
-                    <div class="skill-name">Trabajo en Equipo</div>
-                </div>
-                <div class="skill-level">
-                    <span style="color: var(--accent-primary); font-size: 0.9rem; font-weight: 600;">Sinergia
-                        Colaborativa</span>
-                </div>
-                <p style="color: var(--text-secondary);">Fomento de un ambiente de apoyo, comunicación efectiva y logro
-                    de metas mediante la colaboración activa.</p>
-            </div>
-
-            <div class="skill-card section-item-hidden">
-                <div class="skill-header">
-                    <div class="skill-icon">
-                        <i class="fas fa-person-digging"></i>
-                    </div>
-                    <div class="skill-name">Autogestión</div>
-                </div>
-                <div class="skill-level">
-                    <span style="color: var(--accent-primary); font-size: 0.9rem; font-weight: 600;">Proactividad
-                        Autónoma</span>
-                </div>
-                <p style="color: var(--text-secondary);">Capacidad para planificar, ejecutar y monitorear tareas de
-                    forma independiente, asumiendo la responsabilidad del resultado.</p>
-            </div>
-
             <div class="skill-card section-item-hidden">
                 <div class="skill-header">
                     <div class="skill-icon">
                         <i class="fas fa-bullseye"></i>
                     </div>
-                    <div class="skill-name">Disciplina</div>
-                </div>
-                <div class="skill-level">
-                    <span style="color: var(--accent-primary); font-size: 0.9rem; font-weight: 600;">Constancia y
-                        Enfoque</span>
-                </div>
-                <p style="color: var(--text-secondary);">Compromiso con la consistencia y el rigor en el cumplimiento de
-                    metodologías y estándares de trabajo.</p>
-            </div>
-
-            <div class="skill-card section-item-hidden">
-                <div class="skill-header">
-                    <div class="skill-icon">
-                        <i class="fas fa-heart-circle-check"></i>
-                    </div>
-                    <div class="skill-name">Empatía</div>
-                </div>
-                <div class="skill-level">
-                    <span style="color: var(--accent-primary); font-size: 0.9rem; font-weight: 600;">Comprensión
-                        Humana</span>
-                </div>
-                <p style="color: var(--text-secondary);">Habilidad para entender las perspectivas y necesidades de los
-                    demás, crucial para la gestión de clientes y equipos.</p>
-            </div>
-
-            <div class="skill-card section-item-hidden">
-                <div class="skill-header">
-                    <div class="skill-icon">
-                        <i class="fa-solid fa-arrow-up-9-1"></i>
-                    </div>
-                    <div class="skill-name">Pensamiento Estratégico</div>
+                    <div class="skill-name">Proactividad</div>
                 </div>
                 <div class="skill-level">
                     <span style="color: var(--accent-primary); font-size: 0.9rem; font-weight: 600;">Visión a Largo
@@ -1429,7 +1818,6 @@
                 <p style="color: var(--text-secondary);">Capacidad para prever escenarios, alinear las tareas diarias
                     con los objetivos macro y optimizar recursos.</p>
             </div>
-
             <div class="skill-card section-item-hidden">
                 <div class="skill-header">
                     <div class="skill-icon">
@@ -1444,7 +1832,6 @@
                 <p style="color: var(--text-secondary);">Eficacia en la priorización de tareas, el establecimiento de
                     límites y el cumplimiento riguroso de los plazos.</p>
             </div>
-
             <div class="skill-card section-item-hidden">
                 <div class="skill-header">
                     <div class="skill-icon">
@@ -1459,7 +1846,6 @@
                 <p style="color: var(--text-secondary);">Flexibilidad ante cambios de requisitos, metodologías o
                     entornos, manteniendo siempre la eficiencia y el enfoque.</p>
             </div>
-
             <div class="skill-card section-item-hidden">
                 <div class="skill-header">
                     <div class="skill-icon">
@@ -1474,7 +1860,6 @@
                 <p style="color: var(--text-secondary);">Enfoque metódico y creativo para identificar la raíz de los
                     desafíos y generar soluciones prácticas y duraderas.</p>
             </div>
-
             <div class="skill-card section-item-hidden">
                 <div class="skill-header">
                     <div class="skill-icon">
@@ -1486,65 +1871,40 @@
                     <span style="color: var(--accent-primary); font-size: 0.9rem; font-weight: 600;">Manejo
                         Interpersonal</span>
                 </div>
-                <p style="color: var(--text-secondary);">Conciencia y gestión de emociones propias y ajenas, esencial
-                    para la comunicación y la gestión de conflictos.</p>
+                <p style="color: var(--text-secondary);">Fuerte habilidad para reconocer y gestionar emociones propias y
+                    ajenas, construyendo un clima laboral positivo.</p>
             </div>
-
         </div>
     </section>
-
-    <!-- Habilidades -->
+    <hr>
     <section id="skills" class="fade-in">
         <h2 class="section-title">Habilidades Técnicas</h2>
         <div class="skills-grid">
             <div class="skill-card">
                 <div class="skill-header">
                     <div class="skill-icon">
+                        <i class="fas fa-code"></i>
+                    </div>
+                    <div class="skill-name">Desarrollo Web</div>
+                </div>
+                <div class="skill-level">
+                    <div class="level-dots">
+                        <div class="dot active"></div>
+                        <div class="dot active"></div>
+                        <div class="dot active"></div>
+                        <div class="dot active"></div>
+                        <div class="dot"></div>
+                    </div>
+                    <span style="color: var(--text-muted); font-size: 0.9rem;">Avanzado</span>
+                </div>
+                <p style="color: var(--text-secondary);">Dominio de HTML, CSS, JavaScript (ES6+), Vue.js, y Node.js.</p>
+            </div>
+            <div class="skill-card">
+                <div class="skill-header">
+                    <div class="skill-icon">
                         <i class="fab fa-python"></i>
                     </div>
-                    <div class="skill-name">Python</div>
-                </div>
-                <div class="skill-level">
-                    <div class="level-dots">
-                        <div class="dot active"></div>
-                        <div class="dot active"></div>
-                        <div class="dot active"></div>
-                        <div class="dot active"></div>
-                        <div class="dot"></div>
-                    </div>
-                    <span style="color: var(--text-muted); font-size: 0.9rem;">Avanzado</span>
-                </div>
-                <p style="color: var(--text-secondary);">Análisis de datos para ONGs, automatización de procesos y
-                    desarrollo backend.</p>
-            </div>
-
-            <div class="skill-card">
-                <div class="skill-header">
-                    <div class="skill-icon">
-                        <i class="fas fa-database"></i>
-                    </div>
-                    <div class="skill-name">SQL</div>
-                </div>
-                <div class="skill-level">
-                    <div class="level-dots">
-                        <div class="dot active"></div>
-                        <div class="dot active"></div>
-                        <div class="dot active"></div>
-                        <div class="dot active"></div>
-                        <div class="dot"></div>
-                    </div>
-                    <span style="color: var(--text-muted); font-size: 0.9rem;">Avanzado</span>
-                </div>
-                <p style="color: var(--text-secondary);">Diseño, optimización y gestión de bases de datos relacionales.
-                </p>
-            </div>
-
-            <div class="skill-card">
-                <div class="skill-header">
-                    <div class="skill-icon">
-                        <i class="fab fa-js-square"></i>
-                    </div>
-                    <div class="skill-name">JavaScript</div>
+                    <div class="skill-name">Python y Django</div>
                 </div>
                 <div class="skill-level">
                     <div class="level-dots">
@@ -1559,7 +1919,6 @@
                 <p style="color: var(--text-secondary);">Desarrollo frontend/backend, integración con APIs y Apps
                     Script.</p>
             </div>
-
             <div class="skill-card">
                 <div class="skill-header">
                     <div class="skill-icon">
@@ -1580,7 +1939,6 @@
                 <p style="color: var(--text-secondary);">Automatización de Google Workspace y desarrollo de soluciones
                     empresariales.</p>
             </div>
-
             <div class="skill-card">
                 <div class="skill-header">
                     <div class="skill-icon">
@@ -1601,7 +1959,6 @@
                 <p style="color: var(--text-secondary);">Auditoría de sistemas, seguridad informática y protección de
                     datos.</p>
             </div>
-
             <div class="skill-card">
                 <div class="skill-header">
                     <div class="skill-icon">
@@ -1622,7 +1979,6 @@
                 <p style="color: var(--text-secondary);">Diagramas, modelados, cronogramas, EDT/WBS y metodologías
                     ágiles.</p>
             </div>
-
             <div class="skill-card">
                 <div class="skill-header">
                     <div class="skill-icon">
@@ -1635,71 +1991,25 @@
                         <div class="dot active"></div>
                         <div class="dot active"></div>
                         <div class="dot active"></div>
-                        <div class="dot active"></div>
-                        <div class="dot"></div>
-                    </div>
-                    <span style="color: var(--text-muted); font-size: 0.9rem;">Avanzado</span>
-                </div>
-                <p style="color: var(--text-secondary);">Administración y gestión de infraestructura de red empresarial.
-                </p>
-            </div>
-
-            <div class="skill-card">
-                <div class="skill-header">
-                    <div class="skill-icon">
-                        <i class="fas fa-chart-line"></i>
-                    </div>
-                    <div class="skill-name">Análisis Financiero</div>
-                </div>
-                <div class="skill-level">
-                    <div class="level-dots">
-                        <div class="dot active"></div>
-                        <div class="dot active"></div>
-                        <div class="dot active"></div>
-                        <div class="dot active"></div>
-                        <div class="dot"></div>
-                    </div>
-                    <span style="color: var(--text-muted); font-size: 0.9rem;">Avanzado</span>
-                </div>
-                <p style="color: var(--text-secondary);">Evaluación de proyectos, análisis de rentabilidad y gestión
-                    financiera.</p>
-            </div>
-
-
-            <div class="skill-card">
-                <div class="skill-header">
-                    <div class="skill-icon">
-                        <i class="fa-brands fa-pied-piper-hat"></i>
-                    </div>
-                    <div class="skill-name">Inglés Técnico</div>
-                </div>
-                <div class="skill-level">
-                    <div class="level-dots">
-                        <div class="dot active"></div>
-                        <div class="dot active"></div>
-                        <div class="dot"></div>
                         <div class="dot"></div>
                         <div class="dot"></div>
                     </div>
-                    <span style="color: var(--text-muted); font-size: 0.9rem;">Medio</span>
+                    <span style="color: var(--text-muted); font-size: 0.9rem;">Bueno</span>
                 </div>
-                <p style="color: var(--text-secondary);">Capacidad para leer documentación técnica, escribir correos y
-                    mantener conversaciones básicas en entornos laborales.</p>
+                <p style="color: var(--text-secondary);">Configuración de hardware, protocolos (TCP/IP), y sistemas
+                    operativos (Linux/Windows).</p>
             </div>
         </div>
     </section>
-
-    <!-- Proyectos -->
+    <hr>
     <section id="projects" class="fade-in">
-        <h2 class="section-title">Proyectos Profesionales</h2>
+        <h2 class="section-title">Proyectos Destacados</h2>
         <div class="projects-grid">
             <div class="project-card">
-                <h3 class="project-title">SGL PRO - Sistema de Gestión de Préstamos</h3>
-                <p class="project-description">
-                    Sistema integral para la gestión profesional de préstamos con interfaz intuitiva,
-                    automatización de procesos y generación de reportes detallados. Implementa validaciones
-                    avanzadas y cálculos financieros precisos.
-                </p>
+                <h3 class="project-title">Sistema de Nómina y Tesorería Web</h3>
+                <p class="project-description"> Plataforma robusta con interfaz intuitiva, automatización de procesos y
+                    generación de reportes detallados. Implementa validaciones avanzadas y cálculos financieros
+                    precisos. </p>
                 <div class="project-tech">
                     <span class="tech-tag">HTML5</span>
                     <span class="tech-tag">CSS3</span>
@@ -1709,23 +2019,18 @@
                 </div>
                 <div class="project-links">
                     <a href="https://github.com/SystemsPlay/Entrenamiento" class="project-link">
-                        <i class="fab fa-github"></i>
-                        Código
+                        <i class="fab fa-github"></i> Código
                     </a>
                     <a href="https://systemsplay.github.io/Entrenamiento/login.html" class="project-link demo">
-                        <i class="fas fa-external-link-alt"></i>
-                        Demo
+                        <i class="fas fa-external-link-alt"></i> Demo
                     </a>
                 </div>
             </div>
-
             <div class="project-card">
                 <h3 class="project-title">BarrilTech - Sistema de Gestión</h3>
-                <p class="project-description">
-                    Plataforma completa de gestión empresarial desarrollada para optimizar procesos
-                    operativos, control de inventarios y administración de recursos. Incluye dashboard
-                    ejecutivo con métricas en tiempo real.
-                </p>
+                <p class="project-description"> Plataforma completa de gestión empresarial desarrollada para optimizar
+                    procesos operativos, control de inventarios y administración de recursos. Incluye dashboard
+                    ejecutivo con métricas en tiempo real. </p>
                 <div class="project-tech">
                     <span class="tech-tag">HTML5</span>
                     <span class="tech-tag">CSS3</span>
@@ -1735,23 +2040,18 @@
                 </div>
                 <div class="project-links">
                     <a href="#" class="project-link">
-                        <i class="fab fa-github"></i>
-                        Código
+                        <i class="fab fa-github"></i> Código
                     </a>
                     <a href="#" class="project-link demo">
-                        <i class="fas fa-external-link-alt"></i>
-                        Demo
+                        <i class="fas fa-external-link-alt"></i> Demo
                     </a>
                 </div>
             </div>
-
             <div class="project-card">
                 <h3 class="project-title">Sistema de Gestión Financiera Personal</h3>
-                <p class="project-description">
-                    Herramienta personal para el control y análisis de finanzas personales con
-                    categorización automática de gastos, proyecciones financieras y alertas
-                    inteligentes de presupuesto.
-                </p>
+                <p class="project-description"> Herramienta personal para el control y análisis de finanzas personales
+                    con categorización automática de gastos, proyecciones financieras y alertas inteligentes de
+                    presupuesto. </p>
                 <div class="project-tech">
                     <span class="tech-tag">HTML5</span>
                     <span class="tech-tag">CSS3</span>
@@ -1761,76 +2061,37 @@
                 </div>
                 <div class="project-links">
                     <a href="https://github.com/SystemsPlay/GestionFinanciera" class="project-link">
-                        <i class="fab fa-github"></i>
-                        Código
+                        <i class="fab fa-github"></i> Código
                     </a>
                     <a href="https://systemsplay.github.io/pruebas/" class="project-link demo">
-                        <i class="fas fa-external-link-alt"></i>
-                        Demo
+                        <i class="fas fa-external-link-alt"></i> Demo
                     </a>
                 </div>
             </div>
-
             <div class="project-card">
                 <h3 class="project-title">Sistema Exclusivo - La Victoria Cruzada Cristiana</h3>
-                <p class="project-description">
-                    Sistema empresarial personalizado desarrollado específicamente para La Victoria
-                    Cruzada Cristiana, optimizando sus procesos organizacionales, gestión de eventos
-                    y administración de recursos.
-                </p>
+                <p class="project-description"> Plataforma diseñada a medida para la administración de miembros,
+                    finanzas y actividades eclesiásticas, optimizando la gestión interna de la organización. </p>
                 <div class="project-tech">
                     <span class="tech-tag">HTML5</span>
                     <span class="tech-tag">CSS3</span>
                     <span class="tech-tag">JavaScript</span>
+                    <span class="tech-tag">Google Sheets</span>
                     <span class="tech-tag">Apps Script</span>
-                    <span class="tech-tag">Google Cloud</span>
-                    <span class="tech-tag">Custom APIs</span>
                 </div>
                 <div class="project-links">
                     <a href="#" class="project-link">
-                        <i class="fas fa-lock"></i>
-                        Privado
+                        <i class="fas fa-lock"></i> Privado
                     </a>
                     <a href="#" class="project-link demo">
-                        <i class="fas fa-info-circle"></i>
-                        Info
+                        <i class="fas fa-external-link-alt"></i> Demo
                     </a>
                 </div>
             </div>
-
             <div class="project-card">
-                <h3 class="project-title">Análisis de Datos para ONGs con Python</h3>
-                <p class="project-description">
-                    Herramientas de análisis y procesamiento de datos desarrolladas en Python para
-                    organizaciones sin fines de lucro, incluyendo visualizaciones interactivas y
-                    reportes automatizados de impacto social.
-                </p>
-                <div class="project-tech">
-                    <span class="tech-tag">Python</span>
-                    <span class="tech-tag">Pandas</span>
-                    <span class="tech-tag">Matplotlib</span>
-                    <span class="tech-tag">NumPy</span>
-                    <span class="tech-tag">Jupyter</span>
-                </div>
-                <div class="project-links">
-                    <a href="#" class="project-link">
-                        <i class="fab fa-github"></i>
-                        Privado
-                    </a>
-                    <a href="#" class="project-link demo">
-                        <i class="fas fa-chart-bar"></i>
-                        Privado
-                    </a>
-                </div>
-            </div>
-
-            <div class="project-card">
-                <h3 class="project-title">Auditoría de Seguridad de Sistemas</h3>
-                <p class="project-description">
-                    Framework de auditoría de seguridad desarrollado para evaluar vulnerabilidades
-                    en sistemas empresariales, incluyendo escaneo automatizado, análisis de riesgos
-                    y generación de reportes ejecutivos.
-                </p>
+                <h3 class="project-title">Sistema de Ciberseguridad</h3>
+                <p class="project-description"> Herramientas de análisis de vulnerabilidades en sistemas empresariales,
+                    incluyendo escaneo automatizado, análisis de riesgos y generación de reportes ejecutivos. </p>
                 <div class="project-tech">
                     <span class="tech-tag">Python</span>
                     <span class="tech-tag">Nmap</span>
@@ -1840,357 +2101,306 @@
                 </div>
                 <div class="project-links">
                     <a href="#" class="project-link">
-                        <i class="fas fa-shield-alt"></i>
-                        Privado
+                        <i class="fas fa-shield-alt"></i> Privado
                     </a>
                     <a href="#" class="project-link demo">
-                        <i class="fas fa-file-pdf"></i>
-                        Privado
+                        <i class="fas fa-file-pdf"></i> Privado
                     </a>
                 </div>
             </div>
         </div>
     </section>
-
+    <hr>
     <section id="contact" class="contact fade-in">
         <h2 class="section-title">Contacto Profesional</h2>
-
         <div class="contact-info">
             <h3>Estoy Interesado en colaborar</h3>
-            <p style="color: var(--text-secondary); max-width: 600px; margin: 0 auto;">
-                Estoy disponible para proyectos de desarrollo de software, Redes y Comunicaciones, Mantenimiento de
-                equipos, Consultoría en ciberseguridad
-                y soluciones tecnológicas innovadoras. ¡Conectame y hagamos realidad tu próximo proyecto!
+            <p style="color: var(--text-secondary); max-width: 600px; margin: 0 auto;"> Estoy disponible para proyectos
+                de desarrollo de software, Redes y Comunicaciones, Mantenimiento de equipos, Consultoría en
+                ciberseguridad y soluciones tecnológicas innovadoras. ¡Conectame y hagamos realidad tu próximo proyecto!
             </p>
         </div>
-
         <form id="telegram-form" class="contact-form" action="#" method="POST">
-
             <div class="form-group-grid">
                 <input type="text" id="nombre" name="nombre_o_empresa" placeholder="Nombre o Empresa *" required>
                 <input type="tel" id="telefono" name="telefono" placeholder="Teléfono *" required>
             </div>
-
             <div class="form-group-grid">
                 <select id="country" name="pais" required>
                     <option value="">Cargando Países...</option>
                 </select>
-
                 <div id="location-container" class="location-container">
-
                     <input type="text" id="ubicacion-generica" name="ubicacion_generica"
                         placeholder="Ciudad/Estado/Región *" required>
-
                     <div id="colombia-selectors" class="colombia-selectors-grid">
-                        <select id="departamento" name="departamento" required>
+                        <select id="departamento" name="departamento">
                             <option value="">Seleccionar Departamento *</option>
                         </select>
-                        <select id="municipio" name="municipio" required disabled>
+                        <select id="municipio" name="municipio" disabled>
                             <option value="">Seleccionar Ciudad *</option>
                         </select>
                     </div>
                 </div>
             </div>
-
             <textarea id="concepto" name="concepto" rows="5" placeholder="Cuéntame sobre tu proyecto o concepto *"
                 required></textarea>
-
             <div id="form-status" class="form-status" style="opacity:0;"></div>
-
-            <button type="submit" id="submit-button" class="btn btn-primary" data-state="idle">
-                <span class="button-content">
-                    <i class="fas fa-paper-plane"></i>
-                    <span class="button-text"> Enviar Comunicación</span>
-                </span>
-                <span class="button-loading">
-                    <i class="fas fa-spinner fa-spin"></i>
-                </span>
-                <span class="button-success">
-                    <i class="fas fa-check"></i>
-                </span>
+            <button type="submit" id="submit-button" data-state="default">
+                <span class="button-content"><i class="fas fa-paper-plane"></i> Enviar Mensaje</span>
+                <span class="button-loading"><i class="fas fa-spinner fa-spin"></i></span>
+                <span class="button-success"><i class="fas fa-check"></i> Enviado</span>
             </button>
         </form>
-
-        </div>
-        <div>
-            <strong style="color: var(--text-primary);">Disponibilidad</strong><br>
-            <span class="status-active">
-                Actualmente Abierto a Proyectos
-            </span>
-        </div>
-        </div>
-
         <div class="social-links">
-            <a href="https://linkedin.com/in/joelpineda" class="social-link linkedin" title="LinkedIn">
+            <a href="https://www.linkedin.com/in/joel-steven-pineda-rincon-b7030519a/" target="_blank"
+                class="social-link linkedin" aria-label="LinkedIn">
                 <i class="fab fa-linkedin-in"></i>
             </a>
-            <a href="https://github.com/JOELpineda3312" class="social-link github" title="GitHub">
+            <a href="https://github.com/SystemsPlay" target="_blank" class="social-link github" aria-label="GitHub">
                 <i class="fab fa-github"></i>
             </a>
-            <a href="https://instagram.com/joelpineda" class="social-link instagram" title="Instagram">
+            <a href="https://www.instagram.com/joelstevenpinedarincon/" target="_blank" class="social-link instagram"
+                aria-label="Instagram">
                 <i class="fab fa-instagram"></i>
             </a>
-            <a href="https://twitter.com/joelpineda" class="social-link twitter" title="X (Twitter)">
-                <i class="fab fa-twitter"></i>
-            </a>
-            <a href="https://wa.me/573133118664" class="social-link whatsapp" title="WhatsApp">
-                <i class="fa-brands fa-whatsapp"></i>
+            <a href="https://wa.me/573133118664" target="_blank" class="social-link whatsapp" aria-label="WhatsApp">
+                <i class="fab fa-whatsapp"></i>
             </a>
         </div>
     </section>
 
     <script>
-        // Navegación activa
-        document.addEventListener('DOMContentLoaded', function () {
-            const navLinks = document.querySelectorAll('.nav-links a');
-            const sections = document.querySelectorAll('section');
+        // ===================================================================
+        // FUNCIONALIDAD DE MODO CLARO/OSCURO (AÑADIDO Y MEJORADO)
+        // ===================================================================
 
-            // Función para actualizar navegación activa
-            function updateActiveNav() {
-                let current = '';
-                sections.forEach(section => {
-                    const sectionTop = section.getBoundingClientRect().top;
-                    const sectionHeight = section.getBoundingClientRect().height;
+        const toggleBtn = document.getElementById('theme-toggle-btn');
+        const icon = toggleBtn.querySelector('i');
 
-                    if (sectionTop <= 100 && sectionTop + sectionHeight > 100) {
-                        current = section.getAttribute('id');
-                    }
-                });
-
-                navLinks.forEach(link => {
-                    link.classList.remove('active');
-                    if (link.getAttribute('href').substring(1) === current) {
-                        link.classList.add('active');
-                    }
-                });
+        function applyTheme(isLight) {
+            if (isLight) {
+                document.body.classList.add('light-mode');
+                icon.classList.remove('fa-sun');
+                icon.classList.add('fa-moon');
+                toggleBtn.title = 'Activar Modo Oscuro';
+            } else {
+                document.body.classList.remove('light-mode');
+                icon.classList.remove('fa-moon');
+                icon.classList.add('fa-sun');
+                toggleBtn.title = 'Activar Modo Claro';
             }
+        }
 
-            // Animaciones al scroll
-            function animateOnScroll() {
-                const elements = document.querySelectorAll('.fade-in');
-                elements.forEach(element => {
-                    const elementTop = element.getBoundingClientRect().top;
-                    const elementVisible = 150;
+        // 1. Cargar el tema desde localStorage o usar preferencia del sistema (Dark por defecto)
+        const savedTheme = localStorage.getItem('theme');
+        const prefersLight = window.matchMedia('(prefers-color-scheme: light)').matches;
 
-                    if (elementTop < window.innerHeight - elementVisible) {
-                        element.classList.add('visible');
-                    }
-                });
+        if (savedTheme === 'light') {
+            applyTheme(true);
+        } else if (savedTheme === 'dark') {
+            applyTheme(false);
+        } else {
+            // Si no hay preferencia guardada, usa la preferencia del sistema.
+            // El tema por defecto del CSS es oscuro, así que cambiamos a claro solo si lo prefiere.
+            applyTheme(prefersLight);
+        }
+
+
+        // 2. Manejar el click del botón
+        toggleBtn.addEventListener('click', () => {
+            const isLightNow = document.body.classList.contains('light-mode');
+            if (isLightNow) {
+                applyTheme(false); // Cambiar a Oscuro
+                localStorage.setItem('theme', 'dark');
+            } else {
+                applyTheme(true); // Cambiar a Claro
+                localStorage.setItem('theme', 'light');
             }
-
-            // Event listeners
-            window.addEventListener('scroll', function () {
-                updateActiveNav();
-                animateOnScroll();
-            });
-
-            // Navegación suave
-            navLinks.forEach(link => {
-                link.addEventListener('click', function (e) {
-                    e.preventDefault();
-                    const targetId = this.getAttribute('href').substring(1);
-                    const targetSection = document.getElementById(targetId);
-
-                    if (targetSection) {
-                        const offsetTop = targetSection.getBoundingClientRect().top + window.pageYOffset - 80;
-                        window.scrollTo({
-                            top: offsetTop,
-                            behavior: 'smooth'
-                        });
-                    }
-                });
-            });
-
-            // Menú móvil
-            const mobileMenu = document.querySelector('.mobile-menu');
-            const navLinksContainer = document.querySelector('.nav-links');
-
-            mobileMenu.addEventListener('click', function () {
-                navLinksContainer.classList.toggle('active');
-                this.classList.toggle('active');
-            });
-
-            // Cerrar menú móvil al hacer clic en un enlace
-            navLinks.forEach(link => {
-                link.addEventListener('click', function () {
-                    navLinksContainer.classList.remove('active');
-                    mobileMenu.classList.remove('active');
-                });
-            });
-
-            // Inicializar animaciones
-            setTimeout(() => {
-                animateOnScroll();
-                updateActiveNav();
-            }, 100);
-
-            // Efectos de hover profesionales en tarjetas
-            const skillCards = document.querySelectorAll('.skill-card');
-            const projectCards = document.querySelectorAll('.project-card');
-
-            // Hover suave para skill cards
-            skillCards.forEach(card => {
-                card.addEventListener('mouseenter', function () {
-                    this.style.transform = 'translateY(-4px)';
-                });
-
-                card.addEventListener('mouseleave', function () {
-                    this.style.transform = 'translateY(0)';
-                });
-            });
-
-            // Hover suave para project cards
-            projectCards.forEach(card => {
-                card.addEventListener('mouseenter', function () {
-                    this.style.transform = 'translateY(-4px)';
-                });
-
-                card.addEventListener('mouseleave', function () {
-                    this.style.transform = 'translateY(0)';
-                });
-            });
-
-            // Efecto de typing sutil en el nombre
-            const heroTitle = document.querySelector('.hero-text h1');
-            const originalText = heroTitle.textContent;
-
-            function typeEffect() {
-                heroTitle.style.opacity = '0';
-                setTimeout(() => {
-                    heroTitle.style.opacity = '1';
-                    heroTitle.style.animation = 'fadeInUp 1s ease forwards';
-                }, 500);
-            }
-
-            // Ejecutar después de cargar
-            setTimeout(typeEffect, 1000);
-
-            // Smooth navbar background change
-            const nav = document.querySelector('nav');
-            window.addEventListener('scroll', function () {
-                if (window.scrollY > 50) {
-                    nav.style.background = 'rgba(15, 15, 15, 0.98)';
-                    nav.style.borderBottom = '1px solid rgba(59, 130, 246, 0.3)';
-                } else {
-                    nav.style.background = 'rgba(15, 15, 15, 0.95)';
-                    nav.style.borderBottom = '1px solid var(--border-color)';
-                }
-            });
-
-            // Añadir efecto de carga inicial
-            document.body.style.opacity = '0';
-            setTimeout(() => {
-                document.body.style.transition = 'opacity 0.5s ease';
-                document.body.style.opacity = '1';
-            }, 100);
         });
 
-        // Estilos adicionales para el menú móvil
-        const additionalStyles = document.createElement('style');
-        additionalStyles.textContent = `
-            .mobile-menu.active span:nth-child(1) {
-                transform: rotate(-45deg) translate(-5px, 6px);
-                background: var(--accent-primary);
-            }
-            .mobile-menu.active span:nth-child(2) {
-                opacity: 0;
-            }
-            .mobile-menu.active span:nth-child(3) {
-                transform: rotate(45deg) translate(-5px, -6px);
-                background: var(--accent-primary);
-            }
 
-            @keyframes fadeInUp {
-                from {
-                    opacity: 0;
-                    transform: translateY(20px);
-                }
-                to {
-                    opacity: 1;
-                    transform: translateY(0);
-                }
-            }
+        // ===================================================================
+        // CÁLCULO DE EDAD DINÁMICO (LA EDAD ACTUAL ES CORRECTA: 22 AÑOS)
+        // ===================================================================
+        const fechaNacimiento = new Date('2003-07-20T00:00:00');
 
-            /* Efecto profesional para imágenes de perfil */
-            .profile-img:hover::before {
-                background: linear-gradient(45deg, rgba(59, 130, 246, 0.2) 0%, rgba(139, 92, 246, 0.2) 100%);
-            }
+        function actualizarEdad() {
+            const ahora = new Date();
+            const diffEnMilisegundos = ahora - fechaNacimiento;
 
-            /* Animación suave para elementos */
-            * {
-                transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            }
-        `;
-        document.head.appendChild(additionalStyles);
+            // Calcula años
+            const añosCompletos = Math.floor(diffEnMilisegundos / (1000 * 60 * 60 * 24 * 365.25));
+            document.getElementById('edad-actual').textContent = `${añosCompletos} años`;
+        }
 
-        // Console log profesional
-        console.log(`
-        %c👨‍💻 Joel Steven Pineda Rincón
-        %c🎓 Ingeniero de Sistemas en formación
-        %c🛡️ Especialista en Ciberseguridad
-        %c🌐 Desarrollador Full Stack
-        %c📍 Cúcuta, Colombia
-        
-        %c¿Interesado en colaborar? ¡Conectemos!
-        `,
-            'color: #3b82f6; font-size: 16px; font-weight: bold;',
-            'color: #10b981; font-size: 14px;',
-            'color: #8b5cf6; font-size: 14px;',
-            'color: #3b82f6; font-size: 14px;',
-            'color: #10b981; font-size: 14px;',
-            'color: #ffffff; font-size: 16px; font-weight: bold; margin-top: 10px;'
-        );
+        actualizarEdad();
+
+        // Actualiza la edad cada hora.
+        setInterval(actualizarEdad, 3600000);
 
 
         // ===================================================================
-        //  CONFIGURACIÓN DE TELEGRAM Y VARIABLES (ES5)
+        // FUNCIONALIDAD DE MODALES (MANTENIDA)
         // ===================================================================
-        // ⚠️ ATENCIÓN: NUNCA expongas estos valores en un proyecto real. 
-        // Para producción, se recomienda usar un proxy o un servidor backend.
+
+        function openModal(modalId) {
+            const modal = document.getElementById(modalId);
+            if (modal) {
+                modal.style.display = 'flex';
+                // Bloquear el scroll del body
+                document.body.style.overflow = 'hidden';
+            }
+        }
+
+        function closeModal(modalId) {
+            const modal = document.getElementById(modalId);
+            if (modal) {
+                modal.style.display = 'none';
+                // Restaurar el scroll del body
+                document.body.style.overflow = '';
+            }
+        }
+
+        // Cierra el modal si se presiona la tecla ESC
+        document.addEventListener('keydown', function (event) {
+            if (event.key === "Escape") {
+                document.querySelectorAll('.modal-overlay').forEach(overlay => {
+                    if (overlay.style.display === 'flex') {
+                        closeModal(overlay.id);
+                    }
+                });
+            }
+        });
+
+        // Cierra el modal si se hace clic fuera del contenido (en el overlay)
+        document.querySelectorAll('.modal-overlay').forEach(overlay => {
+            overlay.addEventListener('click', function (event) {
+                if (event.target === overlay) {
+                    closeModal(overlay.id);
+                }
+            });
+        });
+
+
+        // ===================================================================
+        // LÓGICA DE NAVEGACIÓN, SCROLL Y ANIMACIÓN (MANTENIDA)
+        // ===================================================================
+
+        const navLinks = document.querySelectorAll('.nav-links a');
+        const sections = document.querySelectorAll('section');
+
+        function updateActiveNav() {
+            let current = '';
+            const scrollY = window.pageYOffset + 150;
+
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.clientHeight;
+                if (scrollY >= sectionTop && scrollY < sectionTop + sectionHeight) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            navLinks.forEach(a => {
+                a.classList.remove('active');
+                if (a.getAttribute('href').substring(1) === current) {
+                    a.classList.add('active');
+                }
+            });
+        }
+
+        function animateOnScroll() {
+            const elements = document.querySelectorAll('.fade-in');
+            elements.forEach(element => {
+                const elementTop = element.getBoundingClientRect().top;
+                const elementVisible = 150;
+                if (elementTop < window.innerHeight - elementVisible) {
+                    element.classList.add('visible');
+                }
+            });
+        }
+
+        window.addEventListener('scroll', function () {
+            updateActiveNav();
+            animateOnScroll();
+        });
+
+        navLinks.forEach(link => {
+            link.addEventListener('click', function (e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href').substring(1);
+                const targetSection = document.getElementById(targetId);
+                if (targetSection) {
+                    const offsetTop = targetSection.getBoundingClientRect().top + window.pageYOffset - 80;
+                    window.scrollTo({ top: offsetTop, behavior: 'smooth' });
+                }
+            });
+        });
+
+        const mobileMenu = document.querySelector('.mobile-menu');
+        const navLinksContainer = document.querySelector('.nav-links');
+        mobileMenu.addEventListener('click', function () {
+            navLinksContainer.classList.toggle('active');
+            this.classList.toggle('active');
+        });
+
+        navLinks.forEach(link => {
+            link.addEventListener('click', function () {
+                navLinksContainer.classList.remove('active');
+                mobileMenu.classList.remove('active');
+            });
+        });
+
+        setTimeout(() => {
+            animateOnScroll();
+            updateActiveNav();
+        }, 100);
+
+        // Hover suave para cards (solo por si el CSS no funciona correctamente, pero ya está manejado en CSS)
+        const skillCards = document.querySelectorAll('.skill-card');
+        const projectCards = document.querySelectorAll('.project-card');
+
+        skillCards.forEach(card => {
+            card.addEventListener('mouseenter', function () {
+                this.style.transform = 'translateY(-4px)';
+            });
+            card.addEventListener('mouseleave', function () {
+                this.style.transform = 'translateY(0)';
+            });
+        });
+
+        projectCards.forEach(card => {
+            card.addEventListener('mouseenter', function () {
+                this.style.transform = 'translateY(-4px)';
+            });
+            card.addEventListener('mouseleave', function () {
+                this.style.transform = 'translateY(0)';
+            });
+        });
+
+
+        // ===================================================================
+        // CONFIGURACIÓN DE TELEGRAM Y VARIABLES (ES5)
+        // ===================================================================
         var TELEGRAM_TOKEN = "7025383809:AAHdmdzWhdCC5TA3mBtZdQPl_MI512Fkt38";
         var CHAT_ID = "7941395763";
 
-        var countrySelect = document.getElementById('country');
-        var departamentoSelect = document.getElementById('departamento');
-        var municipioSelect = document.getElementById('municipio');
-        var ubicacionGenericaInput = document.getElementById('ubicacion-generica');
-        var colombiaSelectorsDiv = document.getElementById('colombia-selectors');
-        var submitButton = document.getElementById('submit-button');
-        var statusDiv = document.getElementById('form-status');
-        var telegramForm = document.getElementById('telegram-form');
-
-        // Lista de Países esenciales
+        // ===================================================================
+        // DATA DE PAÍSES Y DEPARTAMENTOS
+        // ===================================================================
         var ESSENTIAL_COUNTRIES = [
-            // ===================================
-            // AMÉRICA 🌎
-            // ===================================
             { code: 'CO', name: 'Colombia' },
             { code: 'US', name: 'Estados Unidos' },
-            { code: 'MX', name: 'México' },
-            { code: 'AR', name: 'Argentina' },
-            { code: 'BR', name: 'Brasil' },
             { code: 'CA', name: 'Canadá' },
+            { code: 'MX', name: 'México' },
+            { code: 'ES', name: 'España' },
+            { code: 'AR', name: 'Argentina' },
             { code: 'CL', name: 'Chile' },
             { code: 'PE', name: 'Perú' },
             { code: 'EC', name: 'Ecuador' },
-            { code: 'VE', name: 'Venezuela' },
             { code: 'PA', name: 'Panamá' },
-            { code: 'CR', name: 'Costa Rica' },
-            { code: 'SV', name: 'El Salvador' },
-            { code: 'GT', name: 'Guatemala' },
-            { code: 'HN', name: 'Honduras' },
-            { code: 'NI', name: 'Nicaragua' },
-            { code: 'UY', name: 'Uruguay' },
-            { code: 'PY', name: 'Paraguay' },
-            { code: 'BO', name: 'Bolivia' },
-            { code: 'DO', name: 'República Dominicana' },
-            { code: 'CU', name: 'Cuba' },
-            { code: 'PR', name: 'Puerto Rico' },
-
-            // ===================================
-            // EUROPA 🇪🇺
-            // ===================================
-            { code: 'ES', name: 'España' },
+            { code: 'VE', name: 'Venezuela' },
+            { code: 'BR', name: 'Brasil' },
             { code: 'DE', name: 'Alemania' },
             { code: 'FR', name: 'Francia' },
             { code: 'GB', name: 'Reino Unido' },
@@ -2208,10 +2418,6 @@
             { code: 'DK', name: 'Dinamarca' },
             { code: 'FI', name: 'Finlandia' },
             { code: 'RU', name: 'Rusia' },
-
-            // ===================================
-            // ASIA 🌏
-            // ===================================
             { code: 'CN', name: 'China' },
             { code: 'JP', name: 'Japón' },
             { code: 'IN', name: 'India' },
@@ -2226,245 +2432,58 @@
             { code: 'MY', name: 'Malasia' },
             { code: 'PH', name: 'Filipinas' },
             { code: 'SA', name: 'Arabia Saudita' },
-
-            // ===================================
-            // OTRAS REGIONES (Por si acaso)
-            // ===================================
             { code: 'AU', name: 'Australia' },
             { code: 'NZ', name: 'Nueva Zelanda' },
             { code: 'ZA', name: 'Sudáfrica' }
         ];
 
-        // Data de Departamentos y Ciudades de Colombia
-        var COLOMBIA_DATA = {
-            "Amazonas": ["Leticia", "Puerto Nariño"],
-            "Antioquia": [
-                "Abejorral", "Abriaquí", "Alejandría", "Amagá", "Amalfi", "Andes", "Angelópolis",
-                "Angostura", "Anorí", "Anzá", "Apartadó", "Arboletes", "Argelia", "Armenia",
-                "Barbosa", "Bello", "Belmira", "Betania", "Betulia", "Briceño", "Buriticá",
-                "Cáceres", "Caicedo", "Caldas", "Campamento", "Cañasgordas", "Caracolí",
-                "Caramanta", "Carepa", "Carolina del Príncipe", "Caucasia", "Chigorodó",
-                "Cisneros", "Ciudad Bolívar", "Cocorná", "Concepción", "Concordia", "Copacabana",
-                "Dabeiba", "Donmatías", "Ebéjico", "El Bagre", "El Carmen de Viboral",
-                "El Peñol", "El Retiro", "El Santuario", "Entrerríos", "Envigado", "Fredonia",
-                "Frontino", "Giraldo", "Girardota", "Gómez Plata", "Granada", "Guadalupe", "Guarne",
-                "Guatapé", "Heliconia", "Hispania", "Itagüí", "Ituango", "Jardín", "Jericó",
-                "La Ceja", "La Estrella", "La Pintada", "La Unión", "Liborina", "Maceo",
-                "Marinilla", "Medellín", "Montebello", "Murindó", "Mutatá", "Nariño", "Nechí",
-                "Necoclí", "Olaya", "Peque", "Pueblorrico", "Puerto Berrío", "Puerto Nare",
-                "Puerto Triunfo", "Remedios", "Rionegro", "Sabanalarga", "Sabaneta", "Salgar",
-                "San Andrés de Cuerquia", "San Carlos", "San Francisco", "San Jerónimo",
-                "San José de la Montaña", "San Juan de Urabá", "San Luis", "San Pedro de Urabá",
-                "San Pedro de los Milagros", "San Rafael", "San Roque", "San Vicente", "Santa Bárbara",
-                "Santa Fe de Antioquia", "Santa Rosa de Osos", "Santo Domingo", "Segovia", "Sonsón",
-                "Sopetrán", "Támesis", "Tarazá", "Tarso", "Titiribí", "Toledo", "Turbo", "Uramita",
-                "Urrao", "Valdivia", "Valparaíso", "Vegachí", "Venecia", "Vigía del Fuerte", "Yalí",
-                "Yarumal", "Yolombó", "Yondó", "Zaragoza"
-            ],
+        var COLOMBIA_DIVISIONS = {
+            "Amazonas": ["El Encanto", "La Chorrera", "La Pedrera", "La Victoria", "Leticia", "Miriti - Paraná", "Puerto Alegría", "Puerto Arica", "Puerto Nariño", "Puerto Santander", "Tarapacá"],
+            "Antioquia": ["Abejorral", "Abriaquí", "Alejandría", "Amagá", "Amalfi", "Andes", "Angelópolis", "Angostura", "Anorí", "Santafé de Antioquia", "Anzá", "Apartadó", "Arboletes", "Argelia", "Armenia", "Barbosa", "Bello", "Belmira", "Betania", "Betulia", "Ciudad Bolívar", "Briceño", "Buriticá", "Cáceres", "Caicedo", "Caldas", "Campamento", "Cañasgordas", "Caracolí", "Caramanta", "Carepa", "Carolina", "Caucasia", "Chigorodó", "Cisneros", "Cocorná", "Concepción", "Concordia", "Copacabana", "Dabeiba", "Donmatías", "Ebéjico", "Entrerríos", "Envigado", "Fredonia", "Frontino", "Giraldo", "Girardota", "Gómez Plata", "Granada", "Guadalupe", "Guarne", "Guatapé", "Heliconia", "Hispania", "Itagüí", "Ituango", "Jardín", "Jericó", "La Ceja", "La Estrella", "La Pintada", "La Unión", "Liborina", "Maceo", "Marinilla", "Medellín", "Montebello", "Murindó", "Mutatá", "Nariño", "Nechí", "Necoclí", "Olaya", "Peñol", "Peque", "Pueblorrico", "Puerto Berrío", "Puerto Nare", "Puerto Triunfo", "Remedios", "Retiro", "Rionegro", "Sabanalarga", "Sabaneta", "Salgar", "San Andrés de Cuerquia", "San Carlos", "San Francisco", "San Jerónimo", "San Juan de Urabá", "San Luis", "San Pedro de Urabá", "San Pedro de los Milagros", "San Rafael", "San Roque", "San Vicente", "Santa Bárbara", "Santa Fe de Antioquia", "Santa Rosa de Osos", "Santo Domingo", "Segovia", "Sonsón", "Sopetrán", "Támesis", "Tarazá", "Tarso", "Titiribí", "Toledo", "Turbo", "Uramita", "Urrao", "Valdivia", "Valparaíso", "Vegachí", "Venecia", "Vigía del Fuerte", "Yalí", "Yarumal", "Yolombó", "Yondó", "Zaragoza"],
             "Arauca": ["Arauca", "Arauquita", "Cravo Norte", "Fortul", "Puerto Rondón", "Saravena", "Tame"],
-            "Atlántico": [
-                "Baranoa", "Barranquilla", "Campo de la Cruz", "Candelaria", "Galapa", "Juan de Acosta",
-                "Luruaco", "Malambo", "Manatí", "Palmar de Varela", "Piojó", "Polonuevo", "Ponedera",
-                "Puerto Colombia", "Repelón", "Sabanagrande", "Sabanalarga", "Santa Lucía", "Santo Tomás",
-                "Soledad", "Suán", "Tubará", "Usiacurí"
-            ],
-            "Bolívar": [
-                "Achí", "Altos del Rosario", "Arenal", "Arjona", "Arroyohondo", "Barranco de Loba",
-                "Brazuelo de Papayal", "Calamar", "Cantagallo", "Cartagena de Indias", "Cicuco",
-                "Clemencia", "Córdoba", "El Carmen de Bolívar", "El Guamo", "El Peñón",
-                "Hatillo de Loba", "Magangué", "Mahates", "Margarita", "María la Baja", "Mompós",
-                "Montecristo", "Morales", "Norosí", "Pinillos", "Regidor", "Río Viejo", "San Cristóbal",
-                "San Estanislao", "San Fernando", "San Jacinto del Cauca", "San Jacinto",
-                "San Juan Nepomuceno", "San Martín de Loba", "San Pablo", "Santa Catalina", "Santa Rosa",
-                "Santa Rosa del Sur", "Simití", "Soplaviento", "Talaigua Nuevo", "Tiquisio", "Turbaco",
-                "Turbaná", "Villanueva", "Zambrano"
-            ],
-            "Boyacá": [
-                "Almeida", "Aquitania", "Arcabuco", "Belén", "Berbeo", "Betéitiva", "Boavita", "Boyacá",
-                "Briceño", "Buenavista", "Busbanzá", "Caldas", "Campohermoso", "Cerinza", "Chinavita",
-                "Chiquinquirá", "Chíquiza", "Chiscas", "Chita", "Chitaraque", "Chivatá", "Chivor", "Ciénega",
-                "Cómbita", "Coper", "Corrales", "Covarachía", "CubarÁ", "Cucaita", "Cuítiva", "Duitama",
-                "El Cocuy", "El Espino", "Firavitoba", "Floresta", "Gachantivá", "Gámeza", "Garagoa",
-                "Guacamayas", "Guateque", "Guayatá", "Güicán", "Iza", "Jenesano", "Jericó", "La Capilla",
-                "La Uvita", "La Victoria", "Labranzagrande", "Macanal", "Maripí", "Miraflores", "Mongua",
-                "Monguí", "Moniquirá", "Motavita", "Muzo", "Nobsa", "Nuevo Colón", "Oicatá", "Otanche",
-                "Pachavita", "Páez", "Paipa", "Pajarito", "Panqueba", "Pauna", "Paya", "Paz del Río", "Pesca",
-                "Pisba", "Puerto Boyacá", "Quípama", "Ramiriquí", "Ráquira", "Rondón", "Saboyá", "Sáchica",
-                "Samacá", "San Eduardo", "San José de Pare", "San Luis de Gaceno", "San Mateo",
-                "San Miguel de Sema", "San Pablo de Borbur", "Santa María", "Santa Rosa de Viterbo",
-                "Santa Sofía", "Santana", "Sativanorte", "Sativasur", "Siachoque", "Soatá", "Socha", "Socotá",
-                "Sogamoso", "Somondoco", "Sora", "Soracá", "Sotaquirá", "Susacón", "Sutamarchán", "Sutatenza",
-                "Tasco", "Tenza", "Tibaná", "Tibasosa", "Tinjacá", "Tipacoque", "Toca", "Togüí", "Tópaga", "Tota",
-                "Tunja", "Tununguá", "Turmequé", "Tuta", "Tutazá", "Úmbita", "Ventaquemada", "Villa de Leyva",
-                "Viracachá", "Zetaquira"
-            ],
-            "Caldas": [
-                "Aguadas", "Anserma", "Aranzazu", "Belalcázar", "Chinchiná", "Filadelfia", "La Dorada",
-                "La Merced", "Manizales", "Manzanares", "Marmato", "Marquetalia", "Marulanda", "Neira",
-                "Norcasia", "Pácora", "Palestina", "Pensilvania", "Riosucio", "Risaralda", "Salamina",
-                "Samaná", "San José", "Supía", "Victoria", "Villamaría", "Viterbo"
-            ],
-            "Caquetá": [
-                "Albania", "Belén de los Andaquíes", "Cartagena del Chairá", "Curillo", "El Doncello",
-                "El Paujil", "Florencia", "La Montañita", "Milán", "Morelia", "Puerto Rico",
-                "San José del Fragua", "San Vicente del Caguán", "Solano", "Solita", "Valparaíso"
-            ],
-            "Casanare": [
-                "Aguazul", "Chámeza", "Hato Corozal", "La Salina", "Maní", "Monterrey", "Nunchía", "Orocué",
-                "Paz de Ariporo", "Pore", "Recetor", "Sabanalarga", "Sácama", "San Luis de Palenque",
-                "Támara", "Tauramena", "Trinidad", "Villanueva", "Yopal"
-            ],
-            "Cauca": [
-                "Almaguer", "Argelia", "Balboa", "Bolívar", "Buenos Aires", "Cajibío", "Caldono", "Caloto",
-                "Corinto", "El Tambo", "Florencia", "Guachené", "Guapí", "Inzá", "Jambaló", "La Sierra", "La Vega",
-                "López de Micay", "Mercaderes", "Miranda", "Morales", "Padilla", "Páez", "Patía", "Piamonte",
-                "Piendamó", "Popayán", "Puerto Tejada", "Puracé", "Rosas", "San Sebastián", "Santa Rosa",
-                "Santander de Quilichao", "Silvia", "Sotará", "Suárez", "Sucre", "Timbío", "Timbiquí",
-                "Toribío", "Totoró", "Villa Rica"
-            ],
-            "Cesar": [
-                "Aguachica", "Agustín Codazzi", "Astrea", "Becerril", "Bosconia", "Chimichagua", "Chiriguaná",
-                "Curumaní", "El Copey", "El Paso", "Gamarra", "González", "La Gloria (Cesar)", "La Jagua de Ibirico",
-                "La Paz", "Manaure Balcón del Cesar", "Pailitas", "Pelaya", "Pueblo Bello", "Río de Oro",
-                "San Alberto", "San Diego", "San Martín", "Tamalameque", "Valledupar"
-            ],
-            "Chocó": [
-                "Acandí", "Alto Baudó", "Bagadó", "Bahía Solano", "Bajo Baudó", "Bojayá", "Cantón de San Pablo",
-                "Cértegui", "Condoto", "El Atrato", "El Carmen de Atrato", "El Carmen del Darién", "Istmina",
-                "Juradó", "Litoral de San Juan", "Lloró", "Medio Atrato", "Medio Baudó", "Medio San Juan",
-                "Nóvita", "Nuquí", "Quibdó", "Río Iró", "Río Quito", "Riosucio", "San José del Palmar", "Sipí",
-                "Tadó", "Unión Panamericana", "Unguía"
-            ],
-            "Cundinamarca": [
-                "Agua de Dios", "Albán", "Anapoima", "Anolaima", "Apulo", "Arbeláez", "Beltrán", "Bituima",
-                "Bogotá", "Bojacá", "Cabrera", "Cachipay", "Cajicá", "Caparrapí", "Cáqueza", "Carmen de Carupa",
-                "Chaguaní", "Chía", "Chipaque", "Choachí", "Chocontá", "Cogua", "Cota", "Cucunubá", "El Colegio",
-                "El Peñón", "El Rosal", "Facatativá", "Fómeque", "Fosca", "Funza", "Fúquene", "Fusagasugá",
-                "Gachalá", "Gachancipá", "Gachetá", "Gama", "Girardot", "Granada", "Guachetá", "Guaduas", "Guasca",
-                "Guataquí", "Guatavita", "Guayabal de Síquima", "Guayabetal", "Gutiérrez", "Jerusalén", "Junín",
-                "La Calera", "La Mesa", "La Palma", "La Peña", "La Vega", "Lenguazaque", "Machetá", "Madrid",
-                "Manta", "Medina", "Mosquera", "Nariño", "Nemocón", "Nilo", "Nimaima", "Nocaima", "Pacho", "Paime",
-                "Pandi", "Paratebueno", "Pasca", "Puerto Salgar", "Pulí", "Quebradanegra", "Quetame", "Quipile",
-                "Ricaurte", "San Antonio del Tequendama", "San Bernardo", "San Cayetano", "San Francisco",
-                "San Juan de Rioseco", "Sasaima", "Sesquilé", "Sibaté", "Silvania", "Simijaca", "Soacha", "Sopó",
-                "Subachoque", "Suesca", "Supatá", "Susa", "Sutatausa", "Tabio", "Tausa", "Tena", "Tenjo", "Tibacuy",
-                "Tibirita", "Tocaima", "Tocancipá", "Topaipí", "Ubalá", "Ubaque", "Ubaté", "Une", "Útica", "Venecia",
-                "Vergara", "Vianí", "Villagómez", "Villapinzón", "Villeta", "Viotá", "Yacopí", "Zipacón", "Zipaquirá"
-            ],
-            "Córdoba": [
-                "Ayapel", "Buenavista", "Canalete", "Cereté", "Chimá", "Chinú", "Ciénaga de Oro", "Cotorra",
-                "La Apartada", "Lorica", "Los Córdobas", "Momil", "Montelíbano", "Montería", "Moñitos",
-                "Planeta Rica", "Pueblo Nuevo", "Puerto Escondido", "Puerto Libertador", "Purísima",
-                "Sahagún", "San Andrés de Sotavento", "San Antero", "San Bernardo del Viento", "San Carlos",
-                "San José de Uré", "San Pelayo", "Tierralta", "Tuchín", "Valencia"
-            ],
-            "Guainía": ["Inírida"],
+            "Atlántico": ["Baranoa", "Barranquilla", "Campo de la Cruz", "Candelaria", "Galapa", "Juan de Acosta", "Luruaco", "Malambo", "Manatí", "Palmar de Varela", "Piojó", "Polonuevo", "Ponedera", "Puerto Colombia", "Repelón", "Sabanagrande", "Sabanalarga", "Salgar", "Santa Lucía", "Santo Tomás", "Soledad", "Suán", "Tubará", "Usiacurí"],
+            "Bolívar": ["Achí", "Altos del Rosario", "Arenal", "Arjona", "Arroyohondo", "Barranco de Loba", "Brazuelo de Papayal", "Calamar", "Cantagallo", "Carmen de Bolívar", "Cartagena", "Clemencia", "Córdoba", "El Guamo", "El Peñón", "Hatillo de Loba", "Magangué", "Mahates", "Margarita", "María la Baja", "Mompós", "Montecristo", "Morales", "Norosí", "Pinillos", "Regidor", "Río Viejo", "San Fernando", "San Jacinto", "San Jacinto del Cauca", "San Juan Nepomuceno", "San Martín de Loba", "San Pablo", "Santa Catalina", "Santa Rosa", "Santa Rosa del Sur", "Simití", "Soplaviento", "Talaigua Nuevo", "Tiquisio", "Turbaco", "Turbaná", "Villanueva", "Zambrano"],
+            "Boyacá": ["Almeida", "Aquitania", "Arcabuco", "Belén", "Berbeo", "Betéitiva", "Boavita", "Caldas", "Chiquinquirá", "Chiscas", "Chita", "Chitaraque", "Chivatá", "Chíquiza", "Ciénaga", "Cómbita", "Coper", "Corrales", "Covarachía", "Cubará", "Cucaita", "Cuítiva", "Duitama", "El Cocuy", "El Espino", "Firavitoba", "Floresta", "Gachantivá", "Gámeza", "Garagoa", "Guacamayas", "Guateque", "Guayatá", "Güicán", "Iza", "Jenesano", "Jericó", "La Capilla", "La Uvita", "Leiva", "Macanal", "Maripí", "Miraflores", "Muzo", "Nobsa", "Nuevo Colón", "Oicatá", "Paipa", "Pajarito", "Paz de Río", "Pesca", "Pisba", "Puerto Boyacá", "Quípama", "Ramiriquí", "Rondón", "Sáchica", "Samacá", "San Eduardo", "San José de Pare", "San Luis de Gaceno", "San Mateo", "San Miguel de Sema", "San Pablo de Borbur", "Santa Sofía", "Sativanorte", "Sativasur", "Siachoque", "Soatá", "Socha", "Sogamoso", "Sora", "Soracá", "Sotaquirá", "Susacón", "Sutamarchán", "Tasco", "Tenza", "Tibaná", "Tinjacá", "Toca", "Tocancipá", "Tópaga", "Tota", "Tunja", "Tuta", "Tutazá", "Úmbita", "Ventaquemada", "Villa de Leyva", "Yopal"],
+            "Caldas": ["Aguadas", "Anserma", "Aranzazu", "Belalcázar", "Chinchiná", "Filadelfia", "La Dorada", "La Merced", "Manizales", "Marmato", "Marquetalia", "Marulanda", "Neira", "Pácora", "Palestina", "Pensilvania", "Riosucio", "Risaralda", "Salamina", "Samaná", "San Félix", "San José", "Supía", "Victoria", "Villamaría", "Viterbo"],
+            "Caquetá": ["Albania", "Belén de los Andaquíes", "Cartagena del Chairá", "Curillo", "El Doncello", "El Paujil", "Florencia", "La Montañita", "Puerto Rico", "San José del Fragua", "San Vicente del Caguán", "Solano", "Solita", "Valparaíso"],
+            "Casanare": ["Aguazul", "Chámeza", "Hato Corozal", "La Salina", "Maní", "Monterrey", "Nunchía", "Orocué", "Pore", "Paz de Ariporo", "Sabanalarga", "Sácama", "Tauramena", "Trinidad", "Villanueva", "Yopal"],
+            "Cauca": ["Almaguer", "Argelia", "Balboa", "Bolívar", "Buenos Aires", "Cajibío", "Caldono", "Caloto", "Corinto", "El Tambo", "Florencia", "Guachené", "Guapi", "Inzá", "Jambaló", "La Sierra", "La Vega", "López de Micay", "Mercaderes", "Miranda", "Padilla", "Páez", "Patía", "Piamonte", "Piendamó", "Popayán", "Puerto Tejada", "Puracé", "Rosas", "San Sebastián", "Santander de Quilichao", "Silvia", "Sotará", "Suárez", "Sucre", "Timbío", "Timbiquí", "Toribío", "Totoró", "Villa Rica"],
+            "Cesar": ["Aguachica", "Agustín Codazzi", "Astrea", "Becerril", "Bosconia", "Chimichagua", "Chiriguaná", "Curumaní", "El Copey", "El Paso", "Gamarra", "González", "La Gloria", "La Jagua de Ibirico", "Manaure Balcón del Cesar", "Pailitas", "Pelaya", "Pueblo Bello", "Río de Oro", "San Alberto", "San Diego", "San Martín", "Tamalameque", "Valledupar"],
+            "Chocó": ["Acandí", "Alto Baudó", "Atrato", "Bagadó", "Bahía Solano", "Bajo Baudó", "Bojayá", "Carmen del Darién", "Cértegui", "Condoto", "El Carmen de Atrato", "El Litoral del San Juan", "Istmina", "Juradó", "Lloró", "Medio Atrato", "Medio Baudó", "Medio San Juan", "Nóvita", "Nuquí", "Quibdó", "Río Iró", "Río Quito", "Riosucio", "Sipí", "Tadó", "Unguía", "Unión Panamericana"],
+            "Córdoba": ["Ayapel", "Buenavista", "Canalete", "Cereté", "Chimá", "Chinú", "Ciénaga de Oro", "Cotorra", "Lorica", "Los Córdobas", "Momil", "Montelíbano", "Montería", "Planeta Rica", "Pueblo Nuevo", "Puerto Escondido", "Puerto Libertador", "Purísima", "Sahagún", "San Andrés de Sotavento", "San Antero", "San Bernardo del Viento", "San Carlos", "San Pelayo", "Tierralta", "Tuchín", "Valencia"],
+            "Cundinamarca": ["Agua de Dios", "Albán", "Anapoima", "Anolaima", "Apulo", "Arbeláez", "Beltrán", "Bituima", "Bojacá", "Cabrera", "Cachipay", "Cajicá", "Chaguaní", "Chía", "Chipaque", "Choachí", "Chocontá", "Cogua", "Cota", "Cucunubá", "El Colegio", "El Peñón", "El Rosal", "Facatativá", "Fómeque", "Fosca", "Funza", "Fúquene", "Gachalá", "Gachancipá", "Gachetá", "Girardot", "Granada", "Guaduas", "Guasca", "Guataquí", "Guatavita", "Guayabetal", "Guayabal de Síquima", "Gutiérrez", "Jerusalén", "La Calera", "La Mesa", "La Palma", "La Peña", "La Vega", "Lenguazaque", "Machetá", "Madrid", "Manta", "Medina", "Mosquera", "Nariño", "Nemocón", "Nocaima", "Pacho", "Paime", "Pandi", "Paratebueno", "Pasca", "Puerto Salgar", "Pulí", "Quebradanegra", "Quetame", "Quipile", "Ricaurte", "San Antonio del Tequendama", "San Bernardo", "San Cayetano", "San Francisco", "Sesquilé", "Sibaté", "Silvania", "Soacha", "Sopó", "Subachoque", "Suesca", "Supatá", "Susa", "Sutatausa", "Tabio", "Tausa", "Tena", "Tenjo", "Tibacuy", "Tibirita", "Tocaima", "Tocancipá", "Topaipí", "Ubalá", "Ubaté", "Une", "Venecia", "Vergara", "Vianí", "Villagómez", "Villapinzón", "Villeta", "Yacopí", "Zipacón", "Zipaquirá", "Bogotá, D.C."],
+            "Guainía": ["Barranco Minas", "Cacahual", "Inírida", "La Guadalupe", "Mapiripana", "Morichal", "Pana Pana", "Puerto Colombia", "San Felipe"],
             "Guaviare": ["Calamar", "El Retorno", "Miraflores", "San José del Guaviare"],
-            "Huila": [
-                "Acevedo", "Agrado", "Aipe", "Algeciras", "Altamira", "Baraya", "Campoalegre", "Colombia",
-                "El Pital", "Elías", "Garzón", "Gigante", "Guadalupe", "Hobo", "Íquira", "Isnos", "La Argentina",
-                "La Plata", "Nátaga", "Neiva", "Oporapa", "Paicol", "Palermo", "Palestina", "Pitalito",
-                "Rivera", "Saladoblanco", "San Agustín", "Santa María", "Suaza", "Tarqui", "Tello", "Teruel",
-                "Tesalia", "Timaná", "Villavieja", "Yaguará"
-            ],
-            "La Guajira": [
-                "Albania", "Barrancas", "Dibulla", "Distracción", "El Molino", "Fonseca", "Hatonuevo",
-                "La Jagua del Pilar", "Maicao", "Manaure", "Riohacha", "San Juan del Cesar", "Uribia",
-                "Urumita", "Villanueva"
-            ],
-            "Magdalena": [
-                "Algarrobo", "Aracataca", "Ariguaní", "Cerro de San Antonio", "Chibolo", "Chibolo",
-                "Ciénaga", "Concordia", "El Banco", "El Piñón", "El Retén", "Fundación", "Guamal",
-                "Nueva Granada", "Pedraza", "Pijiño del Carmen", "Pivijay", "Plato", "Pueblo Viejo",
-                "Remolino", "Sabanas de San Ángel", "Salamina", "San Sebastián de Buenavista",
-                "San Zenón", "Santa Ana", "Santa Bárbara de Pinto", "Santa Marta", "Sitionuevo",
-                "Tenerife", "Zapayán", "Zona Bananera"
-            ],
-            "Meta": [
-                "Acacías", "Barranca de Upía", "Cabuyaro", "Castilla la Nueva", "Cubarral", "Cumaral",
-                "El Calvario", "El Castillo", "El Dorado", "Fuente de Oro", "Granada", "Guamal",
-                "La Macarena", "La Uribe", "Lejanías", "Mapiripán", "Mesetas", "Puerto Concordia",
-                "Puerto Gaitán", "Puerto Lleras", "Puerto López", "Puerto Rico", "Restrepo",
-                "San Carlos de Guaroa", "San Juan de Arama", "San Juanito", "San Martín",
-                "Villavicencio", "Vista Hermosa"
-            ],
-            "Nariño": [
-                "Aldana", "Ancuyá", "Arboleda", "Barbacoas", "Belén", "Buesaco", "Chachagüí", "Colón",
-                "Consacá", "Contadero", "Córdoba", "Cuaspud", "Cumbal", "Cumbitara", "El Charco", "El Peñol",
-                "El Rosario", "El Tablón", "El Tambo", "Francisco Pizarro", "Funes", "Guachucal",
-                "Guaitarilla", "Gualmatán", "Iles", "Imués", "Ipiales", "La Cruz", "La Florida", "La Llanada",
-                "La Tola", "La Unión", "Leiva", "Linares", "Los Andes", "Magüí Payán", "Mallama", "Mosquera",
-                "Nariño", "Olaya Herrera", "Ospina", "Pasto", "Policarpa", "Potosí", "Providencia", "Puerres",
-                "Pupiales", "Ricaurte", "Roberto Payán", "Samaniego", "San Bernardo", "San José de Albán",
-                "San Lorenzo", "San Pablo", "San Pedro de Cartago", "Sandoná", "Santa Bárbara", "Santacruz",
-                "Sapuyes", "Taminango", "Tangua", "Tumaco", "Túquerres", "Yacuanquer"
-            ],
-            "Norte de Santander": [
-                "Ábrego", "Arboledas", "Bochalema", "Bucarasica", "Cáchira", "Cácota", "Chinácota", "Chitagá",
-                "Convención", "Cúcuta", "Cucutilla", "Duránia", "El Carmen", "El Tarra", "El Zulia", "Gramalote",
-                "Hacarí", "Herrán", "La Esperanza", "La Playa de Belén", "Labateca", "Los Patios", "Lourdes",
-                "Mutiscua", "Ocaña", "Pamplona", "Pamplonita", "Puerto Santander", "Ragonvalia",
-                "Salazar de Las Palmas", "San Calixto", "San Cayetano", "Santiago", "Santo Domingo de Silos",
-                "Sardinata", "Teorama", "Tibú", "Toledo", "Villa Caro", "Villa del Rosario"
-            ],
-            "Putumayo": [
-                "Colón", "Mocoa", "Orito", "Puerto Asís", "Puerto Caicedo", "Puerto Guzmán", "Puerto Leguízamo",
-                "San Francisco", "San Miguel", "Santiago", "Sibundoy", "Valle del Guamuez", "Villagarzón"
-            ],
-            "Quindío": [
-                "Armenia", "Buenavista", "Calarcá", "Circasia", "Córdoba", "Filandia", "Génova", "La Tebaida",
-                "Montenegro", "Pijao", "Quimbaya", "Salento"
-            ],
-            "Risaralda": [
-                "Apía", "Balboa", "Belén de Umbría", "Dosquebradas", "Guática", "La Celia", "La Virginia",
-                "Marsella", "Mistrató", "Pereira", "Pueblo Rico", "Quinchía", "Santa Rosa de Cabal",
-                "Santuario"
-            ],
-            "San Andrés y Providencia": ["Providencia y Santa Catalina Islas", "San Andrés"],
-            "Santander": [
-                "Aguada", "Albania", "Aratoca", "Barbosa", "Barichara", "Barrancabermeja", "Betulia",
-                "Bolívar", "Bucaramanga", "Cabrera", "California", "Capitanejo", "Carcasí", "Cepitá",
-                "Cerrito", "Charalá", "Charta", "Chima", "Chipatá", "Cimitarra", "Concepción", "Confines",
-                "Contratación", "Coromoro", "Curití", "El Carmen de Chucurí", "El Guacamayo", "El Peñón",
-                "El Playón", "El Socorro", "Encino", "Enciso", "Florián", "Floridablanca", "Galán", "Gámbita",
-                "Girón", "Guaca", "Guadalupe", "Guapotá", "Guavatá", "Güepsa", "Hato", "Jesús María", "Jordán",
-                "La Belleza", "La Paz", "Landázuri", "Lebrija", "Los Santos", "Macaravita", "Málaga", "Matanza",
-                "Mogotes", "Molagavita", "Ocamonte", "Oiba", "Onzaga", "Palmar", "Palmas del Socorro", "Páramo",
-                "Piedecuesta", "Pinchote", "Puente Nacional", "Puerto Parra", "Puerto Wilches", "Rionegro",
-                "Sabana de Torres", "San Andrés", "San Benito", "San Gil", "San Joaquín", "San José de Miranda",
-                "San Miguel", "San Vicente de Chucurí", "Santa Bárbara", "Santa Helena del Opón", "Simacota",
-                "Suaita", "Sucre", "Suratá", "Tona", "Valle de San José", "Vélez", "Vetas", "Villanueva", "Zapatoca"
-            ],
-            "Sucre": [
-                "Buenavista", "Caimito", "Chalán", "Colosó", "Corozal", "Coveñas", "El Roble", "Galeras", "Guaranda",
-                "La Unión", "Los Palmitos", "Majagual", "Morroa", "Ovejas", "Sampués", "San Antonio de Palmito",
-                "San Benito Abad", "San Juan de Betulia", "San Marcos", "San Onofre", "San Pedro", "Sincé", "Sincelejo",
-                "Sucre", "Tolú", "Tolú Viejo"
-            ],
-            "Tolima": [
-                "Alpujarra", "Alvarado", "Ambalema", "Anzoátegui", "Armero", "Ataco", "Cajamarca", "Carmen de Apicalá",
-                "Casabianca", "Chaparral", "Coello", "Coyaima", "Cunday", "Dolores", "El Espinal", "Falán", "Flandes",
-                "Fresno", "Guamo", "Herveo", "Honda", "Ibagué", "Icononzo", "Lérida", "Líbano", "Mariquita", "Melgar",
-                "Murillo", "Natagaima", "Ortega", "Palocabildo", "Piedras", "Planadas", "Prado", "Purificación", "Rioblanco",
-                "Roncesvalles", "Rovira", "Saldaña", "San Antonio", "San Luis", "Santa Isabel", "Suárez", "Valle de San Juan",
-                "Venadillo", "Villahermosa", "Villarrica"
-            ],
-            "Valle del Cauca": [
-                "Alcalá", "Andalucía", "Ansermanuevo", "Argelia", "Bolívar", "Buenaventura", "Buga", "Bugalagrande",
-                "Caicedonia", "Cali", "Calima", "Candelaria", "Cartago", "Dagua", "El Águila", "El Cairo", "El Cerrito",
-                "El Dovio", "Florida", "Ginebra", "Guacarí", "Jamundí", "La Cumbre", "La Unión", "La Victoria", "Obando",
-                "Palmira", "Pradera", "Restrepo", "Riofrío", "Roldanillo", "San Pedro", "Sevilla", "Toro", "Trujillo",
-                "Tuluá", "Ulloa", "Versalles", "Vijes", "Yotoco", "Yumbo", "Zarzal"
-            ],
+            "Huila": ["Acevedo", "Agrado", "Aipe", "Algeciras", "Altamira", "Baraya", "Campoalegre", "Colombia", "Elías", "Garzón", "Gigante", "Guadalupe", "Hobo", "Iquira", "Isnos", "La Argentina", "La Plata", "Nátaga", "Neiva", "Oporapa", "Paicol", "Palermo", "Palestina", "Pital", "Pitalito", "Rivera", "Saladoblanco", "San Agustín", "Santa María", "Suaza", "Tarqui", "Tello", "Teruel", "Tesalia", "Timana", "Villavieja", "Yaguará"],
+            "La Guajira": ["Albania", "Dibulla", "Distracción", "El Molino", "Fonseca", "Hatonuevo", "Maicao", "Manaure", "Riohacha", "San Juan del Cesar", "Uribia", "Urumita", "Villanueva"],
+            "Magdalena": ["Algarrobo", "Aracataca", "Ariguaní", "Cerro de San Antonio", "Chibolo", "Ciénaga", "Concordia", "El Banco", "El Piñón", "El Retén", "Fundación", "Guamal", "Nueva Granada", "Pedraza", "Pivijay", "Plato", "Puebloviejo", "Remolino", "Salamina", "San Zenón", "Santa Ana", "Santa Bárbara de Pinto", "Santa Marta", "Sitio Nuevo", "Tenerife", "Zapayán", "Zona Bananera"],
+            "Meta": ["Acacías", "Barranca de Upía", "Cabuyaro", "Castilla la Nueva", "Cubarral", "Cumaral", "El Calvario", "El Castillo", "El Dorado", "Fuente de Oro", "Granada", "Guamal", "La Macarena", "Lejanías", "Mapiripán", "Mesetas", "Puerto Concordia", "Puerto Gaitán", "Puerto Lleras", "Puerto López", "Puerto Rico", "Restrepo", "San Carlos de Guaroa", "San Juan de Arama", "San Juanito", "San Martín", "Vista Hermosa", "Villavicencio"],
+            "Nariño": ["Albán", "Aldana", "Ancuyá", "Arboleda", "Barbacoas", "Buesaco", "Chachagüí", "Colón", "Consacá", "Contadero", "Córdoba", "Cuaspud", "Cumbal", "Cumbitara", "El Charco", "El Peñol", "El Rosario", "El Tablón", "El Tambo", "Francisco Pizarro", "Funes", "Guachucal", "Guaitarilla", "Gualmatán", "Iles", "Imués", "Ipiales", "La Cruz", "La Florida", "La Llanada", "La Tola", "La Unión", "Leiva", "Linares", "Los Andes", "Magüí Payán", "Mallama", "Mosquera", "Nariño", "Olaya Herrera", "Ospina", "Pasto", "Potosí", "Providencia", "Puerres", "Pupiales", "Ricaurte", "Roberto Payán", "Samaniego", "Sandoná", "San Bernardo", "San Lorenzo", "San Pablo", "San Pedro de Cartago", "Santa Bárbara", "Sotomayor", "Taminango", "Tangua", "Tumaco", "Túquerres", "Yacuanquer"],
+            "Norte de Santander": ["Ábrego", "Arboledas", "Bochalema", "Bucarasica", "Cáchira", "Cachira", "Cácota", "Chinácota", "Chitagá", "Convención", "Cúcuta", "Cucutilla", "Durania", "El Carmen", "El Tarra", "El Zulia", "Gramalote", "Hacarí", "Herrán", "La Esperanza", "Labateca", "Los Patios", "Lourdes", "Mutiscua", "Ocaña", "Pamplona", "Pamplonita", "Puerto Santander", "Ragonvalia", "Salazar de las Palmas", "San Calixto", "San Cayetano", "Santiago", "Sardinata", "Silos", "Teorama", "Tibú", "Toledo", "Villa Caro", "Villa del Rosario"],
+            "Putumayo": ["Colón", "Mocoa", "Orito", "Puerto Asís", "Puerto Guzmán", "Puerto Leguízamo", "Puerto Caicedo", "Puerto Rico", "San Francisco", "San Miguel", "Santiago", "Sibundoy", "Valle del Guamuez", "Villagarzón"],
+            "Quindío": ["Armenia", "Buenavista", "Calarcá", "Circasia", "Córdoba", "Filandia", "Génova", "La Tebaida", "Montenegro", "Pijao", "Quimbaya", "Salento"],
+            "Risaralda": ["Apía", "Balboa", "Belén de Umbría", "Dosquebradas", "Guática", "La Celia", "La Virginia", "Marsella", "Mistrató", "Pereira", "Pueblo Rico", "Quinchía", "Santa Rosa de Cabal", "Santuario"],
+            "San Andrés y Providencia": ["Providencia y Santa Catalina", "San Andrés"],
+            "Santander": ["Aguada", "Albania", "Aratoca", "Barbosa", "Barichara", "Barrancabermeja", "Betulia", "Bucaramanga", "Cabrera", "California", "Cepitá", "Cerrito", "Charalá", "Charta", "Chipatá", "Cimitarra", "Contratación", "Coromoro", "Curití", "El Carmen de Chucurí", "El Guacamayo", "El Playón", "El Socorro", "Encino", "Enciso", "Florián", "Floridablanca", "Galán", "Gámbita", "Girón", "Guaca", "Guadalupe", "Guapotá", "Hato", "Jesús María", "Jordán", "La Belleza", "La Paz", "Landázuri", "Lebrija", "Los Santos", "Macaravita", "Málaga", "Matanza", "Mogotes", "Molagavita", "Oiba", "Onzaga", "Palmar", "Palmas del Socorro", "Páramo", "Piedecuesta", "Pinchote", "Puente Nacional", "Puerto Parra", "Puerto Wilches", "Rionegro", "Sabana de Torres", "San Andrés", "San Benito", "San Gil", "San Joaquín", "San José de Miranda", "San Vicente de Chucurí", "Santa Bárbara", "Simacota", "Suaita", "Sucre", "Tona", "Valle de San José", "Vélez", "Vetas", "Villanueva", "Zapatoca"],
+            "Sucre": ["Buenavista", "Caimito", "Colosó", "Corozal", "El Roble", "Galeras", "Guaranda", "La Unión", "Los Palmitos", "Majagual", "Morroa", "Ovejas", "Palmito", "Sampués", "San Benito Abad", "San Marcos", "San Onofre", "San Pedro", "Sincé", "Sincelejo", "Sucre", "Tolú", "Tolú Viejo"],
+            "Tolima": ["Alpujarra", "Alvarado", "Ambalema", "Anzoátegui", "Armero", "Ataco", "Cajamarca", "Carmen de Apicalá", "Casabianca", "Chaparral", "Coello", "Coyaima", "Cunday", "Dolores", "Espinal", "Falan", "Flandes", "Fresno", "Guamo", "Guayabal", "Herveo", "Honda", "Ibagué", "Icononzo", "Líbano", "Melgar", "Murillo", "Natagaima", "Ortega", "Piedras", "Planadas", "Prado", "Purificación", "Rioblanco", "Roncesvalles", "Rovira", "Saldaña", "San Antonio", "San Luis", "Santa Isabel", "Suárez", "Valle de San Juan", "Venadillo", "Villahermosa", "Villarrica"],
+            "Valle del Cauca": ["Alcalá", "Andalucía", "Ansermanuevo", "Argelia", "Bolívar", "Buenaventura", "Buga", "Bugalagrande", "Caicedonia", "Cali", "Calima", "Candelaria", "Cartago", "Dagua", "El Águila", "El Cairo", "El Cerrito", "El Dovio", "Florida", "Ginebra", "Guacarí", "Jamundí", "La Cumbre", "La Unión", "La Victoria", "Obando", "Palmira", "Pradera", "Restrepo", "Riofrío", "Roldanillo", "San Pedro", "Sevilla", "Toro", "Trujillo", "Tuluá", "Ulloa", "Versalles", "Vijes", "Yotoco", "Yumbo", "Zarzal"],
             "Vaupés": ["Carurú", "Mitú", "Taraira"],
             "Vichada": ["Cumaribo", "La Primavera", "Puerto Carreño", "Santa Rosalía"]
         };
 
 
-
         // ===================================================================
-        //  FUNCIONES DE LÓGICA DE UBICACIÓN
+        // FUNCIONES DE LÓGICA DE UBICACIÓN Y FORMULARIO (MANTENIDA)
         // ===================================================================
+        var countrySelect = document.getElementById('country');
+        var departamentoSelect = document.getElementById('departamento');
+        var municipioSelect = document.getElementById('municipio');
+        var ubicacionGenericaInput = document.getElementById('ubicacion-generica');
+        var colombiaSelectorsDiv = document.getElementById('colombia-selectors');
+        var form = document.getElementById('telegram-form');
+        var submitButton = document.getElementById('submit-button');
+        var formStatusDiv = document.getElementById('form-status');
 
         function compareCountries(a, b) {
             return a.name.localeCompare(b.name);
@@ -2472,9 +2491,8 @@
 
         function loadCountries() {
             var i;
-            countrySelect.innerHTML = '<option value="">Seleccionar País *</option>';
+            countrySelect.innerHTML = '<option value="">Cargando Países...</option>';
             ESSENTIAL_COUNTRIES.sort(compareCountries);
-
             for (i = 0; i < ESSENTIAL_COUNTRIES.length; i++) {
                 var country = ESSENTIAL_COUNTRIES[i];
                 var option = document.createElement('option');
@@ -2484,17 +2502,65 @@
             }
         }
 
+        // ===================================================================
+        // FUNCIONES DE LÓGICA DE UBICACIÓN Y FORMULARIO (MANTENIDA)
+        // ===================================================================
+        var countrySelect = document.getElementById('country');
+        var departamentoSelect = document.getElementById('departamento');
+        var municipioSelect = document.getElementById('municipio');
+        // CORRECCIÓN: Usar el ID correcto del input genérico
+        var ubicacionGenericaInput = document.getElementById('ubicacion-generica');
+        var colombiaSelectorsDiv = document.getElementById('colombia-selectors');
+        var form = document.getElementById('telegram-form');
+        var submitButton = document.getElementById('submit-button');
+        var formStatusDiv = document.getElementById('form-status');
+
+        function compareCountries(a, b) {
+            return a.name.localeCompare(b.name);
+        }
+
+        function loadCountries() {
+            var i;
+            countrySelect.innerHTML = '<option value="">Cargando Países...</option>';
+            ESSENTIAL_COUNTRIES.sort(compareCountries);
+            for (i = 0; i < ESSENTIAL_COUNTRIES.length; i++) {
+                var country = ESSENTIAL_COUNTRIES[i];
+                var option = document.createElement('option');
+                option.value = country.code;
+                option.textContent = country.name;
+                countrySelect.appendChild(option);
+            }
+        }
+
+        // *** FUNCIÓN CORREGIDA ***
         function toggleLocationFields(isColombia) {
             if (isColombia) {
-                colombiaSelectorsDiv.style.display = 'flex';
+                // --- Lógica para COLOMBIA ---
+                colombiaSelectorsDiv.style.display = 'grid'; // Cambiado a grid por si el CSS usa flex o grid
+
+                // Habilitar y hacer requeridos los selectores de Colombia
+                departamentoSelect.required = true;
+                municipioSelect.required = true; // CLAVE: Asegurar que municipio sea requerido en Colombia
+                municipioSelect.disabled = true;
+
+                // Ocultar y deshabilitar campo genérico
                 ubicacionGenericaInput.style.display = 'none';
                 ubicacionGenericaInput.required = false;
+
                 loadDepartments();
             } else {
+                // --- Lógica para OTROS PAÍSES ---
                 colombiaSelectorsDiv.style.display = 'none';
+
+                // CLAVE: Deshabilitar el atributo required en los selectores de Colombia
+                departamentoSelect.required = false;
+                municipioSelect.required = false;
+
+                // Mostrar y habilitar campo genérico
                 ubicacionGenericaInput.style.display = 'block';
                 ubicacionGenericaInput.required = true;
 
+                // Limpiar opciones (buena práctica)
                 departamentoSelect.innerHTML = '<option value="">Seleccionar Departamento *</option>';
                 municipioSelect.innerHTML = '<option value="">Seleccionar Ciudad *</option>';
                 municipioSelect.disabled = true;
@@ -2502,16 +2568,13 @@
         }
 
         function loadDepartments() {
-            var departmentName;
+            var depto;
             departamentoSelect.innerHTML = '<option value="">Seleccionar Departamento *</option>';
-            var departments = Object.keys(COLOMBIA_DATA).sort();
-
-            for (departmentName in departments) {
-                if (departments.hasOwnProperty(departmentName)) {
-                    var name = departments[departmentName];
+            for (depto in COLOMBIA_DIVISIONS) {
+                if (COLOMBIA_DIVISIONS.hasOwnProperty(depto)) {
                     var option = document.createElement('option');
-                    option.value = name;
-                    option.textContent = name;
+                    option.value = depto;
+                    option.textContent = depto;
                     departamentoSelect.appendChild(option);
                 }
             }
@@ -2519,55 +2582,57 @@
             municipioSelect.disabled = true;
         }
 
-        function loadMunicipalities(departmentName) {
+        function loadMunicipalities(department) {
+            var municipios = COLOMBIA_DIVISIONS[department] || [];
             var i;
-            municipioSelect.disabled = true;
-            municipioSelect.innerHTML = '<option value="">Cargando Ciudades...</option>';
-
-            if (!departmentName) {
-                municipioSelect.innerHTML = '<option value="">Seleccionar Ciudad *</option>';
-                return;
-            }
-
-            var municipalities = COLOMBIA_DATA[departmentName];
             municipioSelect.innerHTML = '<option value="">Seleccionar Ciudad *</option>';
-
-            for (i = 0; i < municipalities.length; i++) {
-                var city = municipalities[i];
-                var option = document.createElement('option');
-                option.value = city;
-                option.textContent = city;
-                municipioSelect.appendChild(option);
+            if (municipios.length > 0) {
+                municipioSelect.disabled = false;
+                for (i = 0; i < municipios.length; i++) {
+                    var option = document.createElement('option');
+                    option.value = municipios[i];
+                    option.textContent = municipios[i];
+                    municipioSelect.appendChild(option);
+                }
+            } else {
+                municipioSelect.disabled = true;
             }
-            municipioSelect.disabled = false;
         }
 
+        // Event Listeners para la ubicación
+        countrySelect.addEventListener('change', function () {
+            var selectedCountry = this.value;
+            toggleLocationFields(selectedCountry === 'CO');
+        });
 
-        // ===================================================================
-        //  EVENTO Y ENVÍO A TELEGRAM (CON ANIMACIÓN)
-        // ===================================================================
-        telegramForm.addEventListener('submit', function (event) {
-            event.preventDefault();
+        departamentoSelect.addEventListener('change', function () {
+            loadMunicipalities(this.value);
+        });
 
-            // 1. INICIO DE CARGA (Activa la animación CSS)
+        // Inicializar al cargar la página
+        loadCountries();
+        toggleLocationFields(false);
+
+        // Inicializar
+        loadCountries();
+        toggleLocationFields(false);
+
+        // Lógica de envío del formulario
+        form.addEventListener('submit', function (e) {
+            e.preventDefault();
+            formStatusDiv.style.opacity = 0;
             submitButton.setAttribute('data-state', 'loading');
-            statusDiv.style.opacity = 0;
 
-            var form = event.target;
             var formData = new FormData(form);
-
-            // --- Extracción y Construcción del Mensaje ---
             var nombre = formData.get('nombre_o_empresa');
             var telefono = formData.get('telefono');
             var paisCode = formData.get('pais');
             var concepto = formData.get('concepto');
 
-            // Obtener el nombre completo del país
             var paisName = ESSENTIAL_COUNTRIES.filter(function (c) {
                 return c.code === paisCode;
             })[0].name;
 
-            // Determinar ubicación dinámica
             var ubicacion = '';
             if (paisCode === 'CO') {
                 var depto = formData.get('departamento');
@@ -2582,15 +2647,13 @@
                 '<b>👤 Cliente:</b> ' + nombre + '\n' +
                 '<b>📞 Contacto:</b> ' + telefono + '\n' +
                 '<b>📍 Ubicación:</b> ' + paisName + ' (' + ubicacion + ')\n\n' +
-                '<b>💡 Concepto del Proyecto:</b>\n' +
-                concepto
-                    .replace(/&/g, '&amp;') // Prevenir doble-escape
+                '<b>💡 Concepto del Proyecto:</b>\n' + concepto
+                    .replace(/&/g, '&amp;')
                     .replace(/</g, '&lt;')
                     .replace(/>/g, '&gt;');
 
             // URL y parámetros para el método sendMessage
             var url = 'https://api.telegram.org/bot' + TELEGRAM_TOKEN + '/sendMessage';
-
             var params = {
                 chat_id: CHAT_ID,
                 text: messageText,
@@ -2605,136 +2668,97 @@
             // Ejecución del FETCH (GET request)
             fetch(url + '?' + queryString, {
                 method: 'GET'
-            }).then(function (response) {
-                return response.json().then(function (data) {
-                    if (response.ok && data.ok) {
-                        // 2. ÉXITO (Manejo de animación)
-                        submitButton.setAttribute('data-state', 'success');
-
-                        setTimeout(function () {
-                            statusDiv.classList.add('success');
-                            statusDiv.classList.remove('error');
-                            statusDiv.innerHTML = '<i class="fas fa-check-circle"></i> ¡Mensaje enviado con éxito! Te contactaré pronto.';
-                            statusDiv.style.opacity = 1;
-                            form.reset();
-                            setTimeout(function () {
-                                submitButton.setAttribute('data-state', 'idle');
-                                statusDiv.style.opacity = 0;
-                            }, 2500);
-                        }, 1000);
+            })
+                .then(function (response) {
+                    if (response.ok) {
+                        return response.json();
                     } else {
-                        // 3. ERROR de Telegram API
-                        submitButton.setAttribute('data-state', 'error');
-                        setTimeout(function () {
-                            statusDiv.classList.add('error');
-                            statusDiv.classList.remove('success');
-                            statusDiv.innerHTML = '<i class="fas fa-exclamation-triangle"></i> Error al enviar (API).';
-                            statusDiv.style.opacity = 1;
-                            setTimeout(function () {
-                                submitButton.setAttribute('data-state', 'idle');
-                                statusDiv.style.opacity = 0;
-                            }, 3000);
-                        }, 500);
+                        throw new Error('Error al enviar el mensaje: ' + response.statusText);
                     }
-                });
-            }).catch(function (error) {
-                // 3. ERROR de conexión
-                submitButton.setAttribute('data-state', 'error');
-                setTimeout(function () {
-                    statusDiv.classList.add('error');
-                    statusDiv.classList.remove('success');
-                    statusDiv.innerHTML = '<i class="fas fa-times-circle"></i> Error de conexión.';
-                    statusDiv.style.opacity = 1;
+                })
+                .then(function (data) {
+                    if (data.ok) {
+                        submitButton.setAttribute('data-state', 'success');
+                        formStatusDiv.textContent = '¡Mensaje enviado con éxito! Te contactaré pronto.';
+                        formStatusDiv.className = 'form-status success';
+                        formStatusDiv.style.opacity = 1;
+                        form.reset();
+                        toggleLocationFields(false);
+
+                        // Restablecer el botón después de 3 segundos
+                        setTimeout(function () {
+                            submitButton.setAttribute('data-state', 'default');
+                        }, 3000);
+                    } else {
+                        throw new Error(data.description || 'Error desconocido al enviar.');
+                    }
+                })
+                .catch(function (error) {
+                    submitButton.setAttribute('data-state', 'error');
+                    formStatusDiv.textContent = 'Error al enviar el mensaje. Intenta de nuevo más tarde.';
+                    formStatusDiv.className = 'form-status error';
+                    formStatusDiv.style.opacity = 1;
+
+                    // Restablecer el botón después de 3 segundos
                     setTimeout(function () {
-                        submitButton.setAttribute('data-state', 'idle');
-                        statusDiv.style.opacity = 0;
+                        submitButton.setAttribute('data-state', 'default');
                     }, 3000);
-                }, 500);
-            });
-        });
-
-        // Eventos de selección de ubicación
-        countrySelect.addEventListener('change', function (event) {
-            var selectedCode = event.target.value;
-            toggleLocationFields(selectedCode === 'CO');
-        });
-
-        departamentoSelect.addEventListener('change', function (event) {
-            loadMunicipalities(event.target.value);
+                    console.error('Error:', error);
+                });
         });
 
         // ===================================================================
-        //  INICIALIZACIÓN
+        // FUNCIONALIDAD DE INTERRUPTOR DE IDIOMA
         // ===================================================================
-        loadCountries();
-        toggleLocationFields(false);
 
-        // Configura la fecha de nacimiento. Puedes cambiarla a la que necesites.
-        const fechaNacimiento = new Date('2003-07-20T00:00:00');
+        const langToggle = document.getElementById('lang-toggle');
+        const langText = document.getElementById('lang-text');
+        const htmlElement = document.documentElement; // Accede a la etiqueta <html>
 
-        function actualizarEdad() {
-            const ahora = new Date();
-            const diffEnMilisegundos = ahora - fechaNacimiento;
+        // Función para aplicar el idioma (guarda en localStorage y actualiza el HTML)
+        function setLanguage(lang) {
+            // 1. Guarda la preferencia en el navegador
+            localStorage.setItem('user-language', lang);
+            // 2. Aplica el atributo lang a la etiqueta <html> (el navegador usará 'lang="es"' o 'lang="en"')
+            htmlElement.lang = lang;
+            // 3. Actualiza el texto del botón para mostrar el idioma al que SE VA A CAMBIAR (el opuesto)
+            langText.textContent = (lang === 'en' ? 'ES' : 'EN');
 
-            // Calcula años y meses
-            const añosCompletos = Math.floor(diffEnMilisegundos / (1000 * 60 * 60 * 24 * 365.25));
-            const mesesTotales = Math.floor(diffEnMilisegundos / (1000 * 60 * 60 * 24 * (365.25 / 12)));
-            const mesesRestantes = mesesTotales % 12;
+            // NOTA: Si necesitas cambiar el contenido de texto visible (títulos, párrafos, etc.) 
+            // de la página, la lógica de traducción debe implementarse aquí, 
+            // buscando elementos por un atributo (ej: data-i18n="saludo").
+        }
 
-            const edadElemento = document.getElementById('edad-actual');
-            if (edadElemento) {
-                edadElemento.textContent = `${añosCompletos} años y ${mesesRestantes} meses`;
+        // Función para alternar el idioma
+        function toggleLanguage() {
+            // Obtiene el idioma actual del atributo 'lang' del HTML, por defecto 'es'
+            const currentLang = htmlElement.lang || 'es';
+            // Define el nuevo idioma
+            const newLang = (currentLang === 'es' ? 'en' : 'es');
+            setLanguage(newLang);
+        }
+
+        // Event Listener para el botón
+        if (langToggle) {
+            langToggle.addEventListener('click', toggleLanguage);
+        }
+
+        // Inicialización: Cargar la preferencia del usuario al cargar la página
+        function loadLanguagePreference() {
+            const savedLang = localStorage.getItem('user-language');
+            // Asume el idioma por defecto del HTML, si no está guardado
+            const defaultLang = htmlElement.getAttribute('lang') || 'es';
+
+            if (savedLang) {
+                setLanguage(savedLang); // Aplica el idioma guardado
+            } else {
+                // Inicializa el botón con el idioma contrario al por defecto
+                langText.textContent = (defaultLang === 'en' ? 'ES' : 'EN');
             }
         }
 
-        // Llama a la función una vez al cargar la página
-        actualizarEdad();
-
-        // Actualiza la edad cada hora. Puedes cambiar el valor si necesitas una actualización más o menos frecuente.
-        setInterval(actualizarEdad, 3600000);
-
-        // ===================================================================
-// FUNCIONALIDAD DE MODALES (AÑADIDO)
-// ===================================================================
-
-function openModal(modalId) {
-    const modal = document.getElementById(modalId);
-    if (modal) {
-        modal.style.display = 'flex';
-        // Bloquear el scroll del body
-        document.body.style.overflow = 'hidden';
-    }
-}
-
-function closeModal(modalId) {
-    const modal = document.getElementById(modalId);
-    if (modal) {
-        modal.style.display = 'none';
-        // Restaurar el scroll del body
-        document.body.style.overflow = '';
-    }
-}
-
-// Cierra el modal si se presiona la tecla ESC
-document.addEventListener('keydown', function (event) {
-    if (event.key === "Escape") {
-        document.querySelectorAll('.modal-overlay').forEach(overlay => {
-            if (overlay.style.display === 'flex') {
-                closeModal(overlay.id);
-            }
-        });
-    }
-});
-
-// Cierra el modal si se hace clic fuera del contenido (en el overlay)
-document.querySelectorAll('.modal-overlay').forEach(overlay => {
-    overlay.addEventListener('click', function (event) {
-        if (event.target === overlay) {
-            closeModal(overlay.id);
-        }
-    });
-});
-
+        // Llamar a la función de inicialización al cargar la página
+        loadLanguagePreference();
     </script>
 </body>
 
